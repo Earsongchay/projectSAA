@@ -1,1 +1,15 @@
-*{	margin:0;}body{	display: flex;}
+*{
+	margin:0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body{
+	background-color: red;
+	display: flex;
+	flex-direction: column-reverse;
+}
+h1{
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 20px;
+	color: aqua;
+}
