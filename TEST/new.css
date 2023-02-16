@@ -1,1 +1,9 @@
-*{	margin:0;}body{	display: flex;}
+*{
+	margin:0;
+}
+body{
+	display: flex;
+}
+head{
+	padding: 0;
+}
