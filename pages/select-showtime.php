@@ -35,7 +35,7 @@
                 <div id="showtime-details">
                     <div class="widget">
                         <div id="logo">
-                            <img src="/images/bird-logo.png" alt="">
+                            <img src="../image/bird-logo.png" alt="">
                         </div>
                         <div class="schedule-list">
                             <div class="location">SS11 cineplix meanchey</div>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="widget">
                         <div id="logo">
-                            <img src="../images/bird-logo.png" alt="">
+                            <img src="../image/bird-logo.png" alt="">
                         </div>
                         <div class="schedule-list">
                             <div class="location">SS11 cineplix meanchey</div>

@@ -153,227 +153,37 @@ session_start();
 
   <main>
     <article>
-      <!-- 
+      <!--
         - #UPCOMING
+
       -->
       <section class="upcoming">
         <div class="container">
 
-          <div class="flex-wrapper">
+          <div class="title-wrapper">
+            <p class="section-subtitle">In SS11 Cinema</p>
 
-            <div class="title-wrapper">
-              <p class="section-subtitle">In SS11 Cinema</p>
-
-              <h2 class="h2 section-title">UPCOMING MOVIES</h2>
-            </div>
-
-            <ul class="filter-list">
-
-              <li>
-                <button class="filter-btn">Movies</button>
-              </li>
-
-              <li>
-                <button class="filter-btn">Anime</button>
-              </li>
-
-            </ul>
-
+            <h2 class="h2 section-title">UPCOMING MOVIES</h2>
           </div>
-
-          <!-- Movies list starts here -->
-          <ul class="movies-list  has-scrollbar">
-
-            <!-- The Northman movies starts here -->
-            <li>
-              <div class="movie-card">
-
-                <a href="./movie-details.html">
-                  <figure class="card-banner">
-                    <img src="images/DCLeageOfSuperPets.jpg" alt="The Northman movie poster">
-                  </figure>
-                </a>
-
-                <div class="title-wrapper">
-                  <a href="movie-details.html">
-                    <h3 class="card-title">DC League of Super-Pets</h3>
-                  </a>
-
-                  <time datetime="2022">2022</time>
-                </div>
-
-                <div class="card-meta">
-                  <div class="badge badge-outline">HD</div>
-
-                  <div class="duration">
-                    <ion-icon name="time-outline"></ion-icon>
-
-                    <time datetime="PT137M">1h 45m</time>
-                  </div>
-
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-
-                    <data>8.5</data>
-                  </div>
-                </div>
-
-              </div>
-            </li>
-            <!-- The Northman movies ends here -->
-
-            <!-- The Doctor Strange starts here -->
-            <li>
-              <div class="movie-card">
-
-                <a href="./movie-details.html">
-                  <figure class="card-banner">
-                    <img src="images/Doctor Strange.jpg" alt="Doctor Strange in the Multiverse of Madness movie poster">
-                  </figure>
-                </a>
-
-                <div class="title-wrapper">
-                  <a href="./movie-details.html">
-                    <h3 class="card-title">Doctor Strange in the Multiverse of Madness</h3>
-                  </a>
-
-                  <time datetime="2022">2022</time>
-                </div>
-
-                <div class="card-meta">
-                  <div class="badge badge-outline">4K</div>
-
-                  <div class="duration">
-                    <ion-icon name="time-outline"></ion-icon>
-
-                    <time datetime="PT126M">126 min</time>
-                  </div>
-
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-
-                    <data>NR</data>
-                  </div>
-                </div>
-
-              </div>
-            </li>
-            <!-- The Doctor Strange ends here -->
-
-            <!-- The Black Panther starts here -->
-            <li>
-              <div class="movie-card">
-
-                <a href="./movie-details.html">
-                  <figure class="card-banner">
-                    <img src="images/BlackPanther.jpg" alt="Memory movie poster">
-                  </figure>
-                </a>
-
-                <div class="title-wrapper">
-                  <a href="./movie-details.html">
-                    <h3 class="card-title">Black Panther</h3>
-                  </a>
-
-                  <time datetime="2022">2022</time>
-                </div>
-
-                <div class="card-meta">
-                  <div class="badge badge-outline">2K</div>
-
-                  <div class="duration">
-                    <ion-icon name="time-outline"></ion-icon>
-
-                    <time datetime="">2h 41m</time>
-                  </div>
-
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-
-                    <data>NR</data>
-                  </div>
-                </div>
-
-              </div>
-            </li>
-            <!-- The Black Panther ends here -->
-
-            <!-- The Extraction starts here -->
-            <li>
-              <div class="movie-card">
-
-                <a href="./movie-details.html">
-                  <figure class="card-banner">
-                    <img src="images/Extraction.jpg" alt="Extraction 2020">
-                  </figure>
-                </a>
-
-                <div class="title-wrapper">
-                  <a href="./movie-details.html">
-                    <h3 class="card-title">Extraction</h3>
-                  </a>
-
-                  <time datetime="2022">2022</time>
-                </div>
-
-                <div class="card-meta">
-                  <div class="badge badge-outline">HD</div>
-
-                  <div class="duration">
-                    <ion-icon name="time-outline"></ion-icon>
-
-                    <time datetime="PT107M">1h 56m</time>
-                  </div>
-
-                  <div class="rating">
-                    <ion-icon name="star"></ion-icon>
-
-                    <data>NR</data>
-                  </div>
-                </div>
-
-              </div>
-            </li>
-            <!-- The Extraction starts here -->
-          </ul>
-          <!-- Movies list starts here -->
-
-        </div>
-      </section>
-
-
-      <!-- 
-        - #NOW SHOWING
-      -->
-
-      <section class="top-rated">
-        <div class="container">
-
-          <p class="section-subtitle">In Cinema</p>
-
-          <h2 class="h2 section-title">NOW SHOWING</h2>
-
           <ul class="filter-list">
 
-            <li>
-              <button class="filter-btn">Action</button>
-            </li>
+          <li>
+            <button class="filter-btn">Action</button>
+          </li>
 
-            <li>
-              <button class="filter-btn">Horror</button>
-            </li>
+          <li>
+            <button class="filter-btn">Horror</button>
+          </li>
 
-            <li>
-              <button class="filter-btn">Documentary</button>
-            </li>
+          <li>
+            <button class="filter-btn">Documentary</button>
+          </li>
 
-            <li>
-              <button class="filter-btn">Science-Fiction</button>
-            </li>
+          <li>
+            <button class="filter-btn">Science-Fiction</button>
+          </li>
 
-          </ul>
-          <!-- online streams ends here -->
-
+        </ul>
           <ul class="movies-list">
             <?php
             $servername = "localhost";
@@ -387,9 +197,8 @@ session_start();
             if ($conn->connect_error) {
               die("Connection failed: " . $conn->connect_error);
             }
-            $sql = "SELECT *  FROM movies";
+            $sql = 'SELECT * FROM movies WHERE movie_status="up coming"';
             $result = $conn->query($sql);
-
             if ($result->num_rows > 0) {
               // output data of each row
               while ($row = $result->fetch_assoc()) {
@@ -401,8 +210,7 @@ session_start();
                     <?php
 
                     ?>
-
-                    <a href="movie-detail.php?movie_id=<?php echo $row['movie_id'] ?>">
+                    <a href="movie-detail.php?movie_id=<?php echo $row['movie_id']?>">
                       <figure class="card-banner">
                         <img src="../image/<?php echo $row['movie_image']; ?>">
                       </figure>
@@ -414,11 +222,11 @@ session_start();
                       </a>
 
                       <time datetime="2022"><?php $release_date = $row['release_date'];
-                                            echo substr($release_date, 0, 4)  ?></time>
+                                            echo substr($release_date, 6)  ?></time>
                     </div>
 
                     <div class="card-meta">
-                      <div class="badge badge-outline">2K</div>
+                      <div class="badge badge-outline">Up to IMAX</div>
 
                       <div class="duration">
                         <ion-icon name="time-outline"></ion-icon>
@@ -430,7 +238,11 @@ session_start();
                       <div class="rating">
                         <ion-icon name="star"></ion-icon>
                         <data><?php $rating = $row['rating'];
-                              echo $rating ?></data>
+                              if ($rating == "") {
+                                echo "N/A";
+                              } else {
+                                echo $rating;
+                              } ?></data>
                       </div>
                     </div>
 
@@ -443,6 +255,108 @@ session_start();
 
         </div>
       </section>
+    </article>
+
+    <!-- 
+        - #NOW SHOWING
+      -->
+
+    <section class="top-rated">
+      <div class="container">
+
+        <p class="section-subtitle">In Cinema</p>
+
+        <h2 class="h2 section-title">NOW SHOWING</h2>
+
+        <ul class="filter-list">
+
+          <li>
+            <button class="filter-btn">Action</button>
+          </li>
+
+          <li>
+            <button class="filter-btn">Horror</button>
+          </li>
+
+          <li>
+            <button class="filter-btn">Documentary</button>
+          </li>
+
+          <li>
+            <button class="filter-btn">Science-Fiction</button>
+          </li>
+
+        </ul>
+        <!-- online streams ends here -->
+
+        <ul class="movies-list">
+          <?php
+          $servername = "localhost";
+          $username = "root";
+          $password = "";
+          $dbname = "db_movies";
+
+          // Create connection
+          $conn = new mysqli($servername, $username, $password, $dbname);
+          // Check connection
+          if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+          }
+          $sql = 'SELECT * FROM movies WHERE movie_status="now showing"';
+          $result = $conn->query($sql);
+          if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+          ?>
+              <!-- Bumble bee starts here -->
+              <li>
+                <div class="movie-card">
+
+                  <?php
+
+                  ?>
+
+                  <a href="movie-detail.php?movie_id=<?php echo $row['movie_id'] ?>">
+                    <figure class="card-banner">
+                      <img src="../image/<?php echo $row['movie_image']; ?>">
+                    </figure>
+                  </a>
+
+                  <div class="title-wrapper">
+                    <a href="./movie-detail.html">
+                      <h3 class="card-title"><?php echo $row['movie_title'] ?></h3>
+                    </a>
+
+                    <time datetime="2022"><?php $release_date = $row['release_date'];
+                                          echo substr($release_date, 6)  ?></time>
+                  </div>
+
+                  <div class="card-meta">
+                    <div class="badge badge-outline">Up to IMAX</div>
+
+                    <div class="duration">
+                      <ion-icon name="time-outline"></ion-icon>
+
+                      <time datetime="PT122M"><?php $du = $row['durations'];
+                                              echo $du ?></time>
+                    </div>
+
+                    <div class="rating">
+                      <ion-icon name="star"></ion-icon>
+                      <data><?php $rating = $row['rating'];
+                            echo $rating ?></data>
+                    </div>
+                  </div>
+
+                </div>
+              </li>
+          <?php }
+          } ?>
+
+        </ul>
+
+      </div>
+    </section>
     </article>
   </main>
   <!-- 

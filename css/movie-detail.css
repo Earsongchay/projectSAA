@@ -78,7 +78,7 @@ body{
     color: rgb(255, 224, 22);
     font-size: 1.5em;
 }
-#main #description .content #middle #movie-datetime,#movie-genre{
+ #middle #movie-datetime,#movie-genre{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: white;
@@ -86,7 +86,7 @@ body{
     padding: 5px;
     margin-bottom: -15px;
 }
-#main #description .content #middle #movie-description{
+ #middle #movie-description{
     width: 70%;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
