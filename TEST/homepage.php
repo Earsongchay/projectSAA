@@ -13,30 +13,6 @@
 <body>
     <p id="co"></p>
     <p id="demo"></p>
-    <div class="movie-container">
-        <label> Select a movie:</label>
-        <select id="movie">
-            <option value="10">Black Panther: Wakanda Forever</option>
-            <option value="20">DC League of Super-Pets</option>
-            <option value="30">Black Adam</option>
-            <option value="40">John Wick</option>
-        </select>
-    </div>
-
-    <ul class="showcase">
-        <li>
-            <div class="seat"></div>
-            <small>Available</small>
-        </li>
-        <li>
-            <div class="seat selected"></div>
-            <small>Selected</small>
-        </li>
-        <li>
-            <div class="seat sold"></div>
-            <small>Sold</small>
-        </li>
-    </ul>s
     <div class="container">
         <div class="screen"></div>
 
@@ -53,7 +29,6 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $name = "Hello World";
 
         $sql = "SELECT seat_id ,rows_number, seat_number FROM seats where hall_id=2";
         $result = $conn->query($sql);

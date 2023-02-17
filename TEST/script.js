@@ -1,19 +1,35 @@
 
-let box = document.querySelectorAll('.seat');
+
+let rows = document.querySelectorAll('.rows')
+let box = document.querySelectorAll('.seatt');
 let seats = [];
-let re;
 var count = 0;
+
+let c = 0;
+let r = 0;
+for (let a = 0; a < box.length; a++) {
+    ++c;
+}
+for (let b = 0; b < rows.length; b++) {
+    ++r;
+}
+const col = c / r;
+const re = (c) - (col);
+console.log(re)
+
+
+
+
 for (let i = 0; i < box.length; i++) {
+    box[i].addEventListener("click", () => {
 
-    box[i].addEventListener("click", ()=> {
-
-        if (box[i].classList.toggle("active")) {
+        if (box[i].classList.toggle("selected")) {
             ++count;
             if (count == 1) {
-                seats[i] = i+1;
+                seats[i] = i + 1;
             }
             else {
-                seats[i] = " "+ (i+1);
+                seats[i] = " " + (i + 1);
             }
         }
         else {
@@ -22,8 +38,37 @@ for (let i = 0; i < box.length; i++) {
         }
         document.getElementById("demo").innerHTML = seats.join('');
         document.getElementById("co").innerHTML = count;
-    },false);
+    });
 }
+
+
+
+
+
+
+
+
+// for (let i = 0; i < box.length; i++) {
+
+//     box[i].addEventListener("click", ()=> {
+
+//         if (box[i].classList.toggle("selected")) {
+//             ++count;
+//             if (count == 1) {
+//                 seats[i] = i+1;
+//             }
+//             else {
+//                 seats[i] = " "+ (i+1);
+//             }
+//         }
+//         else {
+//             --count;
+//             seats[i] = '';
+//         }
+//         document.getElementById("demo").innerHTML = seats.join('');
+//         document.getElementById("co").innerHTML = count;
+//     },false);
+// }
 
 
 

@@ -51,7 +51,7 @@ body {
   background-color: green;
 }
 
-.seatt.sold {
+.seat.sold {
   background-color: #fff;
 }
 
@@ -93,7 +93,7 @@ body {
   margin-left: 2px;
 }
 
-.row {
+.rows {
   display: flex;
 
 }
