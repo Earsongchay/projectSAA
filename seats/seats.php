@@ -110,6 +110,7 @@
       <span id="total">0</span
       >
     </p>
+
     <script src="sscript.js"></script>
   </body>
 </html>

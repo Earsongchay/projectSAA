@@ -1,6 +1,5 @@
 
-let box = document.querySelectorAll('.box');
-console.log(box)
+let box = document.querySelectorAll('.seat');
 let seats = [];
 let re;
 var count = 0;
@@ -11,10 +10,10 @@ for (let i = 0; i < box.length; i++) {
         if (box[i].classList.toggle("active")) {
             ++count;
             if (count == 1) {
-                seats[i] = i;
+                seats[i] = i+1;
             }
             else {
-                seats[i] = " "+i;
+                seats[i] = " "+ (i+1);
             }
         }
         else {
