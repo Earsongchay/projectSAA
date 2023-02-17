@@ -1,9 +1,10 @@
 
 let box = document.querySelectorAll('.box');
+console.log(box)
 let seats = [];
 let re;
 var count = 0;
-for (let i = 0; i <= box.length; i++) {
+for (let i = 0; i < box.length; i++) {
 
     box[i].addEventListener("click", ()=> {
 

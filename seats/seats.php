@@ -42,7 +42,7 @@
         $servername = "localhost";
         $username = "root";
         $password = "";
-        $dbname = "db_movies";
+        $dbname = "_movies";
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -53,36 +53,27 @@
 
         $name = "Hello World";
 
-        $sql = "SELECT seat_id ,rows_number, seat_number FROM seats where hall_id=4";
+        $sql = "SELECT seat_id ,rows_number, seat_number FROM seats where hall_id=2";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             // output data of each row
-            while ($row = $result->fetch_assoc()) {
-                for ($i = 1; $i <= $row["rows_number"]; $i++) {
-                    for ($j = 1; $j <= $row["seat_number"]; $j++) { ?>
-                        <div class="box"><?php echo $j ?></div>
-                        <?php
-                    }
-                        ?><?php
-                    }
-                }
-            } else {
-                echo "0 results";
+          while ($row = $result->fetch_assoc()) {
+            for ($i = 1; $i <= $row["rows_number"]; $i++) {?>
+              <div class="row"><?php echo $i ?>
+                <?php 
+                for ($j = 1; $j <= $row["seat_number"]; $j++) { ?>
+                <div class="seat"></div>
+                <?php 
+                }?>
+              </div>
+            <?php 
             }
-            $conn->close();
-                        ?>
-      <div class="row">
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat sold"></div>
-        <div class="seat sold"></div>
-      </div>
-      <div class="row">
+          }
+        }
+        
+        ?>
+      <!-- <div class="row">
         <div class="seat"></div>
         <div class="seat"></div>
         <div class="seat"></div>
@@ -96,8 +87,8 @@
         <div class="seat"></div>
         <div class="seat"></div>
         <div class="seat"></div>
-        <div class="seat sold"></div>
-        <div class="seat sold"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
         <div class="seat"></div>
         <div class="seat"></div>
         <div class="seat"></div>
@@ -107,11 +98,11 @@
         <div class="seat"></div>
         <div class="seat"></div>
         <div class="seat"></div>
-        <div class="seat sold"></div>
-        <div class="seat sold"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
         <div class="seat sold"></div>
         <div class="seat"></div>
-      </div>
+      </div> -->
     </div>
 
     <p class="text"> Selected Seat

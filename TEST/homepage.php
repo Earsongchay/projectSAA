@@ -18,7 +18,7 @@
         $servername = "localhost";
         $username = "root";
         $password = "";
-        $dbname = "db_movies";
+        $dbname = "_movies";
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -46,16 +46,11 @@
             } else {
                 echo "0 results";
             }
-            $conn->close();
+            
                         ?>
 
 
     </div>
-    <script type="text/javascript">
-        var x = "<?php echo $name?>";
-        console.log(x);
-    </script>
     <script src="../js/script.js"></script>
 </body>
-
 </html>
