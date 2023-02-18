@@ -84,21 +84,24 @@ $result = $conn->query($sql);
                     let r = rindex + 1;
                     let c = cindex + 1;
                     seats.push(`${r}-${c}`)
-                    document.getElementById('seat').innerHTML = seats;
+                    
                     // document.getElementById('row').innerHTML = r
                     // document.getElementById('cell').innerHTML = c
                 } else {
                     --count;
-                    let inde = seats.indexOf(`1-1`)
-                    seats.splice(inde,0)
-                    console.log(inde)
-                    document.getElementById('seat').innerHTML = seats;
+                    rindex = this.parentElement.rowIndex;
+                    cindex = this.cellIndex;
+                    let r = rindex + 1;
+                    let c = cindex + 1;
+                    let inde = seats.indexOf(`${r}-${c}`)
+                    seats.splice(inde,1)
+                  
                     // var ind = seats.indexOf(r + "-" + c)
                     // console.log(ind)
                     // document.getElementById('row').innerHTML = ""
                     // document.getElementById('cell').innerHTML = ""
                 }
-                // document.getElementById('seat').innerHTML = seats;
+                document.getElementById('seat').innerHTML = seats;
                 document.getElementById('count').innerHTML = count;
 
             }
