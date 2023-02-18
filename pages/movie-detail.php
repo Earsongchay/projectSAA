@@ -42,15 +42,17 @@
             </div>
             <div id="middle">
 
-
               <?php ?>
-
               <div id="movie-title"> <?php echo $row['movie_title'] ?> </div>
               <div id="movie-datetime"> <?php echo $row['release_date'] ?> <br /> <?php echo $row['durations'] ?></div>
               <div id="movie-genre">Action, Sci-fi, Superhero, Comedy</div>
               <div id="movie-description"> <?php echo $row['description'] ?></div>
               <div id="btnShowtime">
+<<<<<<< HEAD
                 <a href="select-showtime.php?movie_id=<?php echo $id?>">ShowTime</a>
+=======
+              <a href="select-showtime.php?movie_id=<?php echo $id ?>">show time</a>
+>>>>>>> 30daa337df18f91abc91e65506ff8822383b4b4c
               </div>
             </div>
 
@@ -63,7 +65,8 @@
     </div>
     <div class="trialer"><?php echo $row['url_trailer']?></div>
     <?php }
-        } ?>
+        } 
+  ?>
   </div>
 </body>
 

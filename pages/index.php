@@ -41,7 +41,7 @@ session_start();
       <div class="overlay" data-overlay></div>
 
       <a href="./index.html" class="logo">
-        <img src="images/bird-logo.png" alt="Filmlane logo">
+        <img src="../image/bird-logo.png" alt="Filmlane logo">
       </a>
 
       <div class="header-actions">
@@ -74,7 +74,7 @@ session_start();
 
         <div class="navbar-top">
 
-          <a href="./index.html" class="logo">
+          <a href="../pages/index.php" class="logo">
             <img src="./assets/images/logo.svg" alt="Filmlane logo">
           </a>
 
