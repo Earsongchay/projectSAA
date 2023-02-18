@@ -3,6 +3,8 @@
 let rows = document.querySelectorAll('.rows')
 let box = document.querySelectorAll('.seatt');
 let seats = [];
+seats.sort()
+seats.reverse()
 var count = 0;
 
 let c = 0;
@@ -13,33 +15,34 @@ for (let a = 0; a < box.length; a++) {
 for (let b = 0; b < rows.length; b++) {
     ++r;
 }
-const col = c / r;
-const re = (c) - (col);
-console.log(re)
 
 
-
-
-for (let i = 0; i < box.length; i++) {
-    box[i].addEventListener("click", () => {
-
-        if (box[i].classList.toggle("selected")) {
-            ++count;
-            if (count == 1) {
-                seats[i] = i + 1;
+for (let j = 0; j < r; j++) {
+    
+    for (let i = 0; i < box.length; i++) {
+        
+        box[i].addEventListener("click", () => {
+            if (box[i].classList.toggle("selected")) {
+                ++count;
+                if (count == 1) {
+                    seats[i] = i + 1;
+                }
+                else {
+                    seats[i] = " " + (i + 1);
+                }
             }
             else {
-                seats[i] = " " + (i + 1);
+                --count;
+                seats[i] = '';
             }
-        }
-        else {
-            --count;
-            seats[i] = '';
-        }
-        document.getElementById("demo").innerHTML = seats.join('');
-        document.getElementById("co").innerHTML = count;
-    });
+            document.getElementById("demo").innerHTML = seats.join('');
+            document.getElementById("co").innerHTML = count;
+        }, false);
+    }
+
 }
+
+
 
 
 
