@@ -53,7 +53,7 @@ include("db_connect.php")
                             join movies m on sd.movie_id = m.movie_id
                             JOIN branches b on bh.branch_id = b.branch_id
                             join halls h on h.hall_id = bh.hall_id
-                            where sd.movie_id =' . $id . ';';
+                            where sd.movie_id =' . $id . ' AND end_time > NOW();';
                         $result = $connection->query($sql2);
                         while ($branch = $result->fetch_assoc()) {
                         ?>
@@ -67,7 +67,8 @@ include("db_connect.php")
                                 $result = $connection->query($sql2);
                                 while ($hall = $result->fetch_assoc()) {
                                 ?>
-                                    <div class="location"><?php $branch_name= $branch['branch_name']; echo $branch_name ?></div>
+                                    <div class="location"><?php $branch_name = $branch['branch_name'];
+                                                            echo $branch_name ?></div>
                                     <div class="theatre-list">
                                         <div class="theatre"><?php echo $hall['hall_name'] ?> </div>
                                         <ul><?php
@@ -75,7 +76,8 @@ include("db_connect.php")
                                             if ($result->num_rows > 0) {
                                                 while ($row = $result->fetch_assoc()) {
                                             ?>
-                                                    <li><a href="#"><?php $time =$row['start_time']; echo date('h:i a',strtotime($time)) ?></a></li>
+                                                    <li><a href="#"><?php $time = $row['start_time'];
+                                                                    echo date('h:i a', strtotime($time)) ?></a></li>
                                                 <?php } ?>
                                         </ul>
                                     </div>

@@ -48,11 +48,7 @@
               <div id="movie-genre">Action, Sci-fi, Superhero, Comedy</div>
               <div id="movie-description"> <?php echo $row['description'] ?></div>
               <div id="btnShowtime">
-<<<<<<< HEAD
                 <a href="select-showtime.php?movie_id=<?php echo $id?>">ShowTime</a>
-=======
-              <a href="select-showtime.php?movie_id=<?php echo $id ?>">show time</a>
->>>>>>> 30daa337df18f91abc91e65506ff8822383b4b4c
               </div>
             </div>
 
