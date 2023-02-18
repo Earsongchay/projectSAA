@@ -6,17 +6,22 @@ $msg = "";
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
 
-	
+
 	$title = $_POST['txt_title'];
 	$durations = $_POST['txt_durations'];
+	$rating = $_POST['rating'];
+	$description = $_POST['description'];
+	$release_date = $_POST['release_date'];
+	$url_trailer = $_POST['url_trailor'];
+	$movie_status = $_POST['movie_status'];
+
 	$filename = $_FILES["uploadfile"]["name"];
 	$tempname = $_FILES["uploadfile"]["tmp_name"];
 	$folder = "../image/" . $filename;
 	$categorie = $_POST['categorie'];
 	$db = mysqli_connect("localhost", "root", "", "db_movies");
-
 	// Get all the submitted data from the form
-	$sql = "INSERT INTO movies (movie_title, durations, movie_image, categorie_id) VALUES ('$title','$durations','$filename','$categorie')";
+	$sql = "INSERT INTO movies (movie_title, durations, movie_image, categorie_id,rating,description,release_date,movie_status,url_trailer) VALUES ('$title','$durations','$filename',$categorie,$rating,'$description','$release_date','$movie_status','$url_trailer')";
 
 	// Execute query
 	mysqli_query($db, $sql);
@@ -24,9 +29,15 @@ if (isset($_POST['upload'])) {
 	// Now let's move the uploaded image into the folder: image
 	if (move_uploaded_file($tempname, $folder)) {
 		echo "<h3> Image uploaded successfully!</h3>";
-		echo $categorie;
-		echo $title;
-		echo $durations;
+		echo $categorie . "<br>";
+		echo $title . "<br>";
+		echo $durations . "<br>";
+		echo $description . "<br>";
+		echo $rating . "<br>";
+		echo $movie_status . "<br>";
+		echo $release_date . "<br>";
+		echo $url_trailor . "<br>";
+		echo $sql;
 	} else {
 		echo "<h3> Failed to upload image!</h3>";
 	}
@@ -41,7 +52,14 @@ if (isset($_POST['upload'])) {
 <head>
 	<title>Image Upload</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style>
+		#content {
+			background-color: aqua;
+			padding: 20px;
+			margin: 50px 50px;
+			border-radius: 15px;
+		}
+	</style>
 </head>
 
 <body>
@@ -69,26 +87,43 @@ if (isset($_POST['upload'])) {
 				// output data of each row
 			?>
 
-				<label for="exampleFormControlSelect1">Movie Categories</label>
-				<select class="form-control" id="exampleFormControlSelect1" name="categorie" >
+				<select class="form-control" id="exampleFormControlSelect1" name="categorie">
 					<?php while ($row = $result->fetch_assoc()) { ?>
 						<option value="<?php echo $row['categorie_id'] ?>"> <?php echo $row['categorie_name'] ?></option>
 					<?php }
 					?>
 				</select>
-
 			<?php }
 			?>
+			<br>
+			<div class="form-group">
+				<input class="form-control" type="text" name="txt_title" placeholder="Title" />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="txt_durations" placeholder="durations" />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="rating" placeholder="rating" />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="description" placeholder="description" />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="release_date" placeholder="release date" />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="url_trailor" placeholder="url trailor" />
+			</div>
+			<select class="form-control" id="exampleFormControlSelect1" name="movie_status">
+				<option value="up coming">up coming</option>
+				<option value="now showing">now showing</option>
+			</select><br>
 
 			<div class="form-group">
-				<input class="form-control" type="text" name="txt_title" value="" />
+				<input class="form-control" type="file" name="uploadfile" placeholder="file" />
 			</div>
-			<div class="form-group">
-				<input class="form-control" type="text" name="txt_durations" value="" />
-			</div>
-			<div class="form-group">
-				<input class="form-control" type="file" name="uploadfile" value="" />
-			</div>
+
+
 			<div class="form-group">
 				<button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
 			</div>

@@ -167,23 +167,23 @@ session_start();
           </div>
           <ul class="filter-list">
 
-          <li>
-            <button class="filter-btn">Action</button>
-          </li>
+            <li>
+              <button class="filter-btn">Action</button>
+            </li>
 
-          <li>
-            <button class="filter-btn">Horror</button>
-          </li>
+            <li>
+              <button class="filter-btn">Horror</button>
+            </li>
 
-          <li>
-            <button class="filter-btn">Documentary</button>
-          </li>
+            <li>
+              <button class="filter-btn">Documentary</button>
+            </li>
 
-          <li>
-            <button class="filter-btn">Science-Fiction</button>
-          </li>
+            <li>
+              <button class="filter-btn">Science-Fiction</button>
+            </li>
 
-        </ul>
+          </ul>
           <ul class="movies-list">
             <?php
             $servername = "localhost";
@@ -210,7 +210,7 @@ session_start();
                     <?php
 
                     ?>
-                    <a href="movie-detail.php?movie_id=<?php echo $row['movie_id']?>">
+                    <a href="movie-detail.php?movie_id=<?php echo $row['movie_id'] ?>">
                       <figure class="card-banner">
                         <img src="../image/<?php echo $row['movie_image']; ?>">
                       </figure>
