@@ -9,10 +9,17 @@ if (isset($_POST['upload'])) {
 	$end_date = substr($end_date,0,10) . " " .substr($end_date,-5). ":00";
 	$start_date=$_POST['Start_date'];
 	$start_date = substr($start_date,0,10) . " " .substr($start_date,-5). ":00";
+	if($start_date<date("Y-m-d h:m:s")){
+		print("<h1>Start Date must be in the future. Thanks! </h1>");
+		echo $start_date ."<br>";
+		echo date("Y/m/d h:m:s");
+		goto A;
+	}
 	$hall_id=$_POST['hall_id'];
 	$branch_id=$_POST['branch_id'];
 	$movie_id=$_POST['movie_id'];
-
+		
+	
 	$sql='SELECT hall_branch_id FROM Branches_Halls WHERE
 	branch_id='. $branch_id .' and hall_id ='. $hall_id;
 	$result = $connection->query($sql);
@@ -32,11 +39,7 @@ if (isset($_POST['upload'])) {
 	echo 'end_date : '. $end_date. "<br>";
 	echo 'movie_id : ' . $movie_id. "<br>";
 	echo  'start_date : '. $start_date;
-	/*/ Get all the submitted data from the form
-	$sql = "INSERT INTO movies (movie_title, durations, movie_image, categorie_id,rating,description,release_date,movie_status,url_trailer) VALUES ('$title','$durations','$filename',$categorie,$rating,'$description','$release_date','$movie_status','$url_trailer')";
-
-	// Execute query
-		mysqli_query($db, $sql);*/
+		A:
 }
 
 ?>
