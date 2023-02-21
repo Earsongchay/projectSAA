@@ -1,26 +1,23 @@
 <style>
-    tr {
-        display: flex;
-        gap: 10px;
-    }
-
-    td {
-        cursor: pointer;
-        background-color: #444451;
-        height: 26px;
-        width: 32px;
-        margin: 3px;
-        font-size: 50px;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-
     .box.active {
         background-color: green;
     }
 
     .active {
         background-color: red;
+    }
+
+    td div {
+        cursor: pointer;
+        background-color: rgb(25, 10, 15);
+        height: 26px;
+        width: 32px;
+        margin: 3px;
+        font-size: 50px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        display: flex;
+        gap: 10px;
     }
 </style>
 <h3>Count: <span id="count"></span></h3>
@@ -51,22 +48,21 @@ $result = $conn->query($sql);
     if ($result !== false && $result->num_rows > 0) {
         // output data of each row
         while ($row = $result->fetch_assoc()) {
-            for ($i = 0; $i < $row['rows_number']; $i++) { ?>
-
-                <tr>
+            for ($i = 1; $i < $row['rows_number'] + 1; $i++) { ?>
+                <tr id="row" value="<?php echo $i ?>">
                     <?php
-                    for ($j = 0; $j < $row['seat_number']; $j++) { ?>
-
-                        <td >
-
+                    for ($j = 1; $j < $row['seat_number'] + 1; $j++) { ?>
+                        <td id="col">
+                            <div id=<?php echo $i . $j ?>></div>
                         </td>
-
                     <?php
-                    } ?>
+                    }
+                    ?>
                 </tr>
-
             <?php
             } ?>
+            <div id="row" value="<?php echo $row['rows_number']; ?>"></div>
+            <div id="col" value="<?php echo $row['seat_number']; ?>"> </div>
     <?php }
     } ?>
 </table>
@@ -75,86 +71,57 @@ $result = $conn->query($sql);
 $sql = "SELECT seats_booked FROM bookingDetails b left JOIN ScheduleDetails s
     ON b.scheduleDetail_id = s.scheduleDetail_id";
 $result = $conn->query($sql);
+$seats_booked = '';
 while ($row = $result->fetch_assoc()) {
-    $seats_booked = $row['seats_booked'];
-} ?><div id="seats_booked" value="<?php echo $seats_booked ?>"><?php echo $seats_booked ?></div>
+    $seats_booked .= $row['seats_booked'];
+} ?><div id="bseat" value="<?php echo $seats_booked ?>"></div>
 <script>
-    let table = document.getElementById('table'),
-        rindex, cindex;
-    var seats_booked = document.getElementById('seats_booked').getAttribute('value');
-    const booked = seats_booked.split(',');
-    const q = [];
+    var booked = document.getElementById('bseat').getAttribute('value').split(",");
+    var r = [];
+    var c = [];
     console.log(booked);
 
-    /*for (var i = 0; i < table.rows.length; i++) {
-        if(booked[i]="A"){
-            booked[i]=1;
-        }else if (booked[i]="B"){
-            booked[i]=2;
-        }else if (booked[i]="A"){
-            booked[i]=1;
-        }else if (booked[i]="A"){
-            booked[i]=1;
-        }else if (booked[i]="A"){
-            booked[i]=1;
-        }else if (booked[i]="A"){
-            booked[i]=1;
-        }else (booked[i]="A"){
-            booked[i]=1;
+    for (let i = 0; i < booked.length; i++) {
+        if (booked[i].charAt(0) == 'A') {
+            r[i] = 1;
+            c[i] = booked[i].replace('A', '');
+        } else if (booked[i].charAt(0) == 'B') {
+            r[i] = 2;
+            c[i] = booked[i].replace('B', '');
+        } else if (booked[i].charAt(0) == 'C') {
+            r[i] = 3;
+            c[i] = booked[i].replace('C', '');
+        } else if (booked[i].charAt(0) == 'D') {
+            r[i] = 4;
+            c[i] = booked[i].replace('D', '');
+        } else if (booked[i].charAt(0) == 'E') {
+            r[i] = 5;
+            c[i] = booked[i].replace('E', '');
+        } else if (booked[i].charAt(0) == 'F') {
+            r[i] = 6;
+            c[i] = booked[i].replace('F', '');
+        } else if (booked[i].charAt(0) == 'G') {
+            r[i] = 7;
+            c[i] = booked[i].replace('G', '');
         }
-        console.log(booked);
+
     }
-
-    */
-    let seats = [];
-    let count = 0;
-
-    for (var i = 0; i < table.rows.length; i++) {
-
-        for (var j = 0; j < table.rows[i].cells.length; j++) {
-
-            table.rows[i].cells[j].onclick = function() {
-
-                rindex = this.parentElement.rowIndex;
-                cindex = this.cellIndex;
-                let r = rindex + 1;
-                let c = cindex + 1;
-                if (r == 1) {
-                    r = "A"
-                } else if (r == 2) {
-                    r = "B"
-                } else if (r == 3) {
-                    r = "C"
-                } else if (r == 4) {
-                    r = "D"
-                } else if (r == 5) {
-                    r = "E"
-                } else {
-                    r = "F"
-                }
-
-
-
-                if (this.classList.toggle('active')) {
-                    ++count;
-                    seats.push(`${r}${c}`)
-                    // let ind = seats.indexOf(`${r}-${c}`)
-                    // console.log(Number(`${c}`))covert to number
-
-                } else {
-                    --count;
-                    let inde = seats.indexOf(`${r}${c}`)
-                    seats.splice(inde, 1)
-                }
-
-                document.getElementById('seat').innerHTML = seats.sort().reverse();
-                document.getElementById('count').innerHTML = count;
-
+    var search = [];
+    for (let i = 0; i < r.length; i++) {
+        search[i] = r[i] + '' + c[i];
+    }
+    console.log(search);
+    let table = document.getElementById('table');
+    var col = document.getElementById('col').getAttribute('value');
+    var row = document.getElementById('row').getAttribute('value');
+    console.log(col + " " + row);
+    for (let i = 1; i <= row; i++) {
+        for (let j = 1; j <= col; j++) {
+            if (search[j - 1] == i + '' + j) {
+                var z = document.getElementById(search[j - 1]);
+                z.classList.add('active');
             }
         }
+
     }
-</script>
-
-<script>
-
 </script>
