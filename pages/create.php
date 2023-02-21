@@ -14,13 +14,15 @@ if (isset($_POST['upload'])) {
 	$release_date = $_POST['release_date'];
 	$url_trailer = $_POST['url_trailor'];
 	$movie_status = $_POST['movie_status'];
-
+	//escape single quote
+ 	
 	$filename = $_FILES["uploadfile"]["name"];
 	$tempname = $_FILES["uploadfile"]["tmp_name"];
 	$folder = "../image/" . $filename;
 	$categorie = $_POST['categorie'];
 	$db = mysqli_connect("localhost", "root", "", "db_movies");
-	// Get all the submitted data from the form
+	$description = mysqli_real_escape_string($db,$description);
+	$title = trim($title);
 	$sql = "INSERT INTO movies (movie_title, durations, movie_image, categorie_id,rating,description,release_date,movie_status,url_trailer) VALUES ('$title','$durations','$filename',$categorie,$rating,'$description','$release_date','$movie_status','$url_trailer')";
 
 	// Execute query

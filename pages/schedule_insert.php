@@ -10,7 +10,7 @@ if (isset($_POST['upload'])) {
 	$start_date=$_POST['Start_date'];
 	$start_date = substr($start_date,0,10) . " " .substr($start_date,-5). ":00";
 	if($start_date<date("Y-m-d h:m:s")){
-		print("<h1>Start Date must be in the future. Thanks! </h1>");
+		print("<h1>Start Date must be in the future. Thanks!</h1>");
 		echo $start_date ."<br>";
 		echo date("Y/m/d h:m:s");
 		goto A;

@@ -35,57 +35,55 @@ include("db_connect.php")
             </div>
             <div id="select-showtime-details">
                 <div id="showtime-details">
-                    <div class="widget">
-                        <?php
-                        $id = $_REQUEST['movie_id'];
-                        $sql2 = 'SELECT bh.hall_branch_id,
-                            bh.branch_id,
-                            bh.hall_id,
-                            movie_title,
-                            rating,
-                            start_time,
-                            end_time,
-                            hall_name,
-                            hall_type,
-                            branch_name
-                            from scheduledetails sd
-                            join branches_halls bh on bh.hall_branch_id = sd.hall_branch_id
-                            join movies m on sd.movie_id = m.movie_id
+                    <?php
+                    $id = $_REQUEST['movie_id'];
+                    $sql_branch = 'SELECT branch_name,bh.branch_id
+                            FROM scheduledetails sd
+                            JOIN branches_halls bh on bh.hall_branch_id = sd.hall_branch_id
                             JOIN branches b on bh.branch_id = b.branch_id
-                            join halls h on h.hall_id = bh.hall_id
-                            where sd.movie_id =' . $id . ' AND end_time > NOW();';
-                        $result = $connection->query($sql2);
-                        while ($branch = $result->fetch_assoc()) {
-                        ?>
+                            WHERE sd.movie_id =' . $id . ' AND end_time > NOW();';
+                    $result_branch = $connection->query($sql_branch);
+                    while ($branch = $result_branch->fetch_assoc()) {
+                    ?>
+                        <div class="widget">
                             <div class="all logo">
                                 <div id="logo">
                                     <img src="../image/bird-logo.png" alt="">
                                 </div>
                             </div>
+                            <?php
+                            $branch_name = $branch['branch_name'];
+                            $sql_hall = "SELECT hall_name from halls h join branches_halls bh on h.hall_id = bh.hall_id join scheduledetails sd on sd.hall_branch_id = bh.hall_branch_id join branches b on bh.branch_id = b.branch_id
+                            where sd.movie_id = $id and end_time > now() and b.branch_name = '$branch_name' ";
+                            $result_hall = $connection->query($sql_hall);
+                            ?>
                             <div class="schedule-list">
-                                <?php
-                                $result = $connection->query($sql2);
-                                while ($hall = $result->fetch_assoc()) {
-                                ?>
-                                    <div class="location"><?php $branch_name = $branch['branch_name'];
-                                                            echo $branch_name ?></div>
-                                    <div class="theatre-list">
-                                        <div class="theatre"><?php echo $hall['hall_name'] ?> </div>
+                                <div class="location"><?php echo $branch_name ?></div>
+                                <div class="theatre-list">
+                                    <?php
+                                    while ($hall = $result_hall->fetch_assoc()) {
+                                        $hall_name = $hall['hall_name'];
+                                    ?>
+                                        <div class="theatre"><?php echo $hall_name ?> </div>
                                         <ul><?php
-                                            $result = $connection->query($sql2);
-                                            if ($result->num_rows > 0) {
-                                                while ($row = $result->fetch_assoc()) {
+                                            $sql_st = "SELECT start_time from halls h join branches_halls bh on h.hall_id = bh.hall_id join scheduledetails sd on sd.hall_branch_id = bh.hall_branch_id where sd.movie_id = $id and end_time > now() and hall_name = '$hall_name'";
+                                            $result_start_time = $connection->query($sql_st);
+                                            if ($result_start_time->num_rows > 0) {
+                                                while ($st = $result_start_time->fetch_assoc()) {
                                             ?>
-                                                    <li><a href="#"><?php $time = $row['start_time'];
-                                                                    echo date('h:i a', strtotime($time)) ?></a></li>
-                                                <?php } ?>
+                                                    <li><a href="#"><?php $time = $st['start_time'];
+                                                                    echo date('h:i a', strtotime($time))
+                                                                    ?></a></li>
+                                            <?php }
+                                            }
+                                            ?>
                                         </ul>
-                                    </div>
+                                    <?php } ?>
+                                </div>
                             </div>
-                <?php   }
-                                        }
-                                    } ?>
-                    </div>
+                        </div>
+                    <?php
+                    } ?>
                 </div>
 
 
