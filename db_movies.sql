@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 21, 2023 at 01:05 AM
+-- Generation Time: Feb 21, 2023 at 05:41 AM
 -- Server version: 5.7.36
 -- PHP Version: 8.0.13
 
@@ -251,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `scheduledetails` (
   PRIMARY KEY (`scheduleDetail_id`),
   KEY `movie_id` (`movie_id`),
   KEY `schedule_id` (`schedule_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `scheduledetails`
@@ -269,7 +269,8 @@ INSERT INTO `scheduledetails` (`scheduleDetail_id`, `schedule_id`, `movie_id`, `
 (18, NULL, 1, '2023-02-20 11:30:00', '2023-02-21 02:00:00', 1),
 (19, NULL, 1, '2023-03-08 09:00:00', '2023-03-08 00:30:00', 1),
 (20, NULL, 1, '2023-03-08 09:00:00', '2023-03-08 12:30:00', 2),
-(21, NULL, 1, '2023-08-03 09:00:00', '2023-08-03 12:30:00', 5);
+(21, NULL, 1, '2023-08-03 09:00:00', '2023-08-03 12:30:00', 5),
+(22, NULL, 1, '2023-02-24 15:00:00', '2023-02-24 17:30:00', 4);
 
 -- --------------------------------------------------------
 

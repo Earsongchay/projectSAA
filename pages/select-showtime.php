@@ -37,7 +37,7 @@ include("db_connect.php")
                 <div id="showtime-details">
                     <?php
                     $id = $_REQUEST['movie_id'];
-                    $sql_branch = 'SELECT branch_name,bh.branch_id
+                    $sql_branch = 'SELECT distinct branch_name,bh.branch_id
                             FROM scheduledetails sd
                             JOIN branches_halls bh on bh.hall_branch_id = sd.hall_branch_id
                             JOIN branches b on bh.branch_id = b.branch_id
@@ -66,7 +66,17 @@ include("db_connect.php")
                                     ?>
                                         <div class="theatre"><?php echo $hall_name ?> </div>
                                         <ul><?php
-                                            $sql_st = "SELECT start_time from halls h join branches_halls bh on h.hall_id = bh.hall_id join scheduledetails sd on sd.hall_branch_id = bh.hall_branch_id where sd.movie_id = $id and end_time > now() and hall_name = '$hall_name'";
+                                            $sql_st = "SELECT start_time 
+                                            FROM scheduledetails sd JOIN branches_halls bh
+                                            ON sd.hall_branch_id = bh.hall_branch_id
+                                            JOIN branches b
+                                            ON b.branch_id=bh.branch_id
+                                            JOIN halls h
+                                            ON h.hall_id=bh.hall_id
+                                            WHERE movie_id=$id
+                                            AND start_time>NOW() 
+                                            AND branch_name='$branch_name'
+                                            AND hall_name='$hall_name'";
                                             $result_start_time = $connection->query($sql_st);
                                             if ($result_start_time->num_rows > 0) {
                                                 while ($st = $result_start_time->fetch_assoc()) {

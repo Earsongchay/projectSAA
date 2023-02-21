@@ -1,3 +1,12 @@
-SELECT hall_name from halls h join branches_halls bh on h.hall_id = bh.hall_id join scheduledetails sd on sd.hall_branch_id = bh.hall_branch_id join branches b on bh.branch_id = b.branch_id
-                             where sd.movie_id = 1 and end_time > now() and b.branch_name = 'AEON MALL' 
+SELECT start_time 
+FROM scheduledetails sd JOIN branches_halls bh
+ON sd.hall_branch_id = bh.hall_branch_id
+JOIN branches b
+ON b.branch_id=bh.branch_id
+JOIN halls h
+ON h.hall_id=bh.hall_id
+WHERE movie_id=1 
+AND start_time>NOW() 
+AND branch_name="AEON MALL"
+AND hall_name="THEATRE D ( IMAX )";
             
