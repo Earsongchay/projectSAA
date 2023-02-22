@@ -6,7 +6,8 @@ $msg = "";
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
 	$end_date=$_POST['End_date'];
-	$end_date = substr($end_date,0,10) . " " .substr($end_date,-5). ":00";
+	//$end_date = substr($end_date,0,10) . " " .substr($end_date,-5). ":00";
+	echo date('h:m',$end_date);
 	$start_date=$_POST['Start_date'];
 	$start_date = substr($start_date,0,10) . " " .substr($start_date,-5). ":00";
 	if($start_date<date("Y-m-d h:m:s")){
@@ -26,7 +27,7 @@ if (isset($_POST['upload'])) {
 	$row=$result->fetch_assoc();
 	$hall_branch_id = $row['hall_branch_id'];
 	$sql="INSERT INTO scheduledetails (scheduleDetail_id, schedule_id, movie_id, start_time, end_time, 	hall_branch_id) VALUES (NULL, NULL,$movie_id,'$start_date','$end_date',$hall_branch_id)";
-	mysqli_query($connection,$sql);
+	//mysqli_query($connection,$sql);
 
 
 	echo '<h1>Sucessfully Insert into Schedule Details</h1><br>';
@@ -128,6 +129,9 @@ if (isset($_POST['upload'])) {
                 <input class="form-control" type="datetime-local" name="Start_date"/>
             </div>
 			<label>End time</label>
+			<?php 
+
+			?>
 			<div class="form-group">
                 <input class="form-control" type="datetime-local" name="End_date"/>
             </div>
