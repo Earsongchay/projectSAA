@@ -15,27 +15,6 @@ if ($conn->connect_error) {
 $sql = "SELECT seat_id ,rows_number, seat_number FROM seats where seat_id=1";
 $result = $conn->query($sql);
 ?>
-<style>
-    .active {
-        background-color: green;
-    }
-    .sold {
-        background-color: red;
-    }
-
-    td div {
-        cursor: pointer;
-        background-color: rgb(25, 10, 15);
-        height: 26px;
-        width: 32px;
-        margin: 3px;
-        font-size: 50px;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        display: flex;
-        gap: 10px;
-    }
-</style>
 <h3>Count: <span id="count"></span></h3>
 <h4>Seat: <span id="seat"></span></h4>
 <table id="table">
@@ -64,6 +43,7 @@ $result = $conn->query($sql);
                                     echo $row['seat_number']; ?>"> </div>
     <?php }
     } ?>
+    <link rel="stylesheet" href="../css/movie-detail.css" />
 </table>
 
 <?php
@@ -84,7 +64,7 @@ while ($row = $result->fetch_assoc()) {
     var row = document.getElementById('row').getAttribute('value');
     console.log(booked);
     var booked_seats = [];
-    var count=0;
+    var count = 0;
     var b = [];
     var book_c = 0,
         book_r = 0;
@@ -123,50 +103,50 @@ while ($row = $result->fetch_assoc()) {
 
     <?php
     for ($i = 1; $i <= $row_r; $i++) {
-        for ($j = 1; $j <= $row_c; $j++) {?>
-        <?php {
+        for ($j = 1; $j <= $row_c; $j++) { ?>
+            <?php {
 
-    ?>
-            b['<?php echo $i . $j; ?>'] = document.getElementById('<?php echo $i . $j; ?>');
-     
+            ?>
+                b['<?php echo $i . $j; ?>'] = document.getElementById('<?php echo $i . $j; ?>');
+
                 b['<?php echo $i . $j; ?>'].addEventListener("click", (e) => {
 
                     b['<?php echo $i . $j; ?>'].classList.toggle('active');
-                    if(b['<?php echo $i . $j; ?>'].classList.contains('active') && !b['<?php echo $i . $j; ?>'].classList.contains('sold')){
-                    book_r = <?php echo $i ?>;
-                    book_c = <?php echo $j ?>;
-                    if(book_r == 1){
-                        book_r="A"
-                    }else if(book_r==2){
-                        book_r="B"
-                    }else if(book_r==3){
-                        book_r="C"
-                    }else if(book_r==4){
-                        book_r="D"
-                    }else if(book_r==5){
-                        book_r="E"
-                    }else if(book_r==6){
-                        book_r="F"
-                    }else{
-                        book_r="G"
-                    }
-                    booked_seats.push(`${book_r}${book_c}`);
-                    count++;
-                    document.getElementById('seat').innerHTML = booked_seats.sort()
-                    document.getElementById('count').innerHTML = count;
-                    }else if(b['<?php echo $i . $j; ?>'].classList.contains('sold')){
-                    alert("This seat is unavailable.");
-                    }else{
-                    booked_seats.pop(`${book_r}${book_c}`);
-                    document.getElementById('seat').innerHTML = booked_seats.sort()
-                    count--;
-                    document.getElementById('count').innerHTML = count;
+                    if (b['<?php echo $i . $j; ?>'].classList.contains('active') && !b['<?php echo $i . $j; ?>'].classList.contains('sold')) {
+                        book_r = <?php echo $i ?>;
+                        book_c = <?php echo $j ?>;
+                        if (book_r == 1) {
+                            book_r = "A"
+                        } else if (book_r == 2) {
+                            book_r = "B"
+                        } else if (book_r == 3) {
+                            book_r = "C"
+                        } else if (book_r == 4) {
+                            book_r = "D"
+                        } else if (book_r == 5) {
+                            book_r = "E"
+                        } else if (book_r == 6) {
+                            book_r = "F"
+                        } else {
+                            book_r = "G"
+                        }
+                        booked_seats.push(`${book_r}${book_c}`);
+                        count++;
+                        document.getElementById('seat').innerHTML = booked_seats.sort()
+                        document.getElementById('total-price').innerHTML = count;
+                    } else if (b['<?php echo $i . $j; ?>'].classList.contains('sold')) {
+                        alert("This seat is unavailable.");
+                    } else {
+                        booked_seats.pop(`${book_r}${book_c}`);
+                        document.getElementById('seat').innerHTML = booked_seats.sort()
+                        count--;
+                        document.getElementById('total-price').innerHTML = count;
                     }
                 });
     <?php }
-    }
+        }
     } ?>
-    
+
     for (let i = 1; i <= row; i++) {
         for (let j = 1; j <= col; j++) {
             if (search[j - 1] == i + '' + j) {

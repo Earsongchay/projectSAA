@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pop up</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <section>
+      <button class="show-modal">Pop up</button>
+      <span class="overlay"></span>
+      <div class="the-modal">
+        <i class="fa-sharp fa-regular fa-circle-check"></i>
+        <h2>Wow!! Impressive</h2>
+        <h3>You have sucessfully builded a pop up.</h3>
+        
+        <div class="buttons">
+            <button class="btnOk">OK</button>
+            <button>Cancel</button>
+        </div>
+      </div>
+      
+    <script>
+        const section = document.querySelector('section'),
+            showModal = document.querySelector('.show-modal'),
+            overlay = document.querySelector('.overlay'),
+            btnOk = document.querySelector('.btnOk');
+            showModal.addEventListener('click',()=> section.classList.add('active'));
+            btnOk.addEventListener('click',()=> section.classList.remove('active'));
+            
+    </script>
+  </body>
+</html>

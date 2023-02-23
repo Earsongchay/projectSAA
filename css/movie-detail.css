@@ -318,3 +318,47 @@ body{
 }
 
 /* seat */
+.active {
+    background-color: green;
+}
+.sold {
+    background-color: red;
+}
+
+td div {
+    cursor: pointer;
+    background-color: rgb(228, 201, 210);
+    height: 26px;
+    width: 32px;
+    margin: 15px;
+    font-size: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    gap: 50px;
+}
+table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+section{
+    position:absolute;
+    width: 50%;
+    height: 400px;
+    top: 220px;
+    margin: 20px;
+    background-color: rgb(0, 0, 0);
+    opacity: 0.97;
+    padding: 50px;
+    opacity: 0;
+    pointer-events: none;
+}
+#trapezoid{
+    margin-top: 20px;
+    display: inline-block;
+    height: 60px;
+    width: 100%;
+    background-color: white;
+    clip-path: polygon(18% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
