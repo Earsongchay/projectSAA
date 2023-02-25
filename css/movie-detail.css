@@ -11,13 +11,16 @@ body{
     padding: 0;
     margin: 0;
     margin-top: 0px;
+    box-sizing: border-box;
+    background:  hsl(228, 13%, 15%);
+    height: auto;
 }
 #main{
     background:  hsl(228, 13%, 15%);
-    height: 1000px;
     margin-top: -20px;
+    height: auto;
 }
-#main #nav,#nav-seat{
+#nav,#nav-seat{
     height: 100px;
     background-color:  hsl(228, 13%, 15%);
     display: flex;
@@ -26,7 +29,7 @@ body{
     position: sticky;
     top: -10px;
 }
-#main #nav ul li a,#nav-seat ul li a{
+#nav ul li a,#nav-seat ul li a{
     text-decoration: none; 
     color: white;
     font-family: 'Heebo', sans-serif;
@@ -35,10 +38,10 @@ body{
     letter-spacing: 1px;
     padding: 10px 18px;
 }
-#main #nav ul li:first-child a{
+#nav ul li:first-child a{
     color:rgb(255, 234, 94);
 }
-#main #nav ul li,#nav-seat ul li{
+ #nav ul li,#nav-seat ul li{
     color: white;
     font-weight: bold;
     list-style-type: none;
@@ -125,56 +128,63 @@ body{
 
 
 /* booking */
-#main #nav-seat{
+#nav-seat{
     margin-top: 20px;
     height: 50px;
     position:static;
     background-color:  hsl(228, 13%, 15%);
 }
-#main #nav-seat ul li a{
+#nav-seat ul li a{
     border-right: 1px solid gray;
     background-color:  hsl(228, 13%, 15%);
     font-size: 12px;
     padding: 15px 80px;
 }
-#main #nav-seat ul li:last-child a{
+#nav-seat ul li:last-child a{
     border-right: 0;
     background-color:  hsl(228, 13%, 15%);
 }
-#main #nav-seat ul li:first-child a{
+#nav-seat ul li:first-child a{
+    background-color: rgb(234, 230, 230);
+    color: black;
+    background-color: rgb(234, 230, 230);
+}
+#nav-seat ul li a#second{
     background-color: rgb(234, 230, 230);
     color: black;
 }
-
-#main #select-showtime-details{
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+#nav-seat ul li a#first{
+    background-color:  hsl(225, 7%, 76%);
+    color: rgb(39, 38, 38);
 }
-#main #select-showtime-details #showtime-details{
-    width: 50%;
-    height: 570px;
+#showtime-details{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    width: auto;
+    height: auto;
     padding: 20px;
 }
-#main #select-showtime-details #summary-details{
+#summary-details{
     background-color: hsl(170, 21%, 5%);
+    margin-top: 40px;
     width: 26%;
     height: 570px;
     padding: 20px;
 }
-#main #select-showtime-details #summary-details #box{
+#summary-details #box{
     display: flex;
     flex-wrap: nowrap;
 }
-#main #select-showtime-details #summary-details #box #image img{
+#summary-details #box #image img{
     height: 100%;
 }
-#main #select-showtime-details #summary-details #box #image{
+#summary-details #box #image{
     width: 100px;
     height: 135px;
     display: block;
 }
-#main #select-showtime-details #summary-details #summary{
+#summary-details #summary{
     font-size: 30px;
     font-family: 'Heebo',sans-serif;
     font-weight: bold;
@@ -182,21 +192,21 @@ body{
     padding-bottom: 20px;
     padding-left: 0;
 }
-#main #select-showtime-details #summary-details #box #description{
+#summary-details #box #description{
     display: flex;
     flex-direction: column;
     margin-top: -5px;
     justify-content: space-evenly;
     margin-left: 10px;
 }
-#main #select-showtime-details #summary-details #box #description #title{
+#summary-details #box #description #title{
     font-family: 'Heebo' ,sans-serif;
     font-weight: bold;
     color: rgb(255, 234, 94);
     font-size: 1.25em;
     margin-top: 10px;
 }
-#main #select-showtime-details #summary-details #box #description #schedule{
+#summary-details #box #description #schedule{
     font-family: 'Heebo' ,sans-serif;
     text-transform: uppercase;
     color: white;
@@ -204,7 +214,7 @@ body{
     letter-spacing: 1px;
     line-height: 10px;
 }
-#main #select-showtime-details #summary-details #seat{
+#summary-details #seat{
     margin-top: 20px;
     font-family: 'Heebo' ,sans-serif;
     padding: 10px;
@@ -213,7 +223,7 @@ body{
     letter-spacing: 1px;
     display: flex;
 }
-#main #select-showtime-details #summary-details #total{
+#summary-details #total{
     font-family: 'Heebo' ,sans-serif;
     padding: 10px;
     color: white;
@@ -221,7 +231,7 @@ body{
     letter-spacing: 1px;
     display: flex;
 }
-#main #select-showtime-details #summary-details #customer-info form input{
+#summary-details #customer-info form input{
     font-family: 'Heebo',sans-serif;
     font-size: 1em;
     display: flex;
@@ -234,20 +244,20 @@ body{
     width: 90%;
     margin-top: 10px;
 }
-#main #select-showtime-details #summary-details #customer-info {
+#summary-details #customer-info {
     font-family: 'Heebo',sans-serif;
     font-size: 1em;
     color: white;
     letter-spacing: 1px;
     margin-top: 20px;
 }
-#main #select-showtime-details #summary-details #btn{
+#summary-details #btn{
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
     
 }
-#main #select-showtime-details #summary-details #btn a#reserve{
+#summary-details #btn a#reserve{
     font-size: 0.6em;
     text-decoration: none;
     padding:5px;
@@ -257,7 +267,7 @@ body{
     border-radius: 5px;
     border: 1px solid rgb(255, 234, 94);
 }
-#main #select-showtime-details #summary-details #btn a#payment{
+#summary-details #btn a#payment{
     font-family: 'Heebo', sans-serif;
     font-size: 0.6em;
     text-decoration: none;
@@ -309,9 +319,11 @@ body{
     padding: 5px;
     font-size: 15px;
     text-decoration: none;
+    border: 0px;
     color: rgb(0, 0, 0);
     background-color: rgb(255, 234, 94);
     border-radius: 5px;
+    cursor: pointer;
 }
 .widget .schedule-list .theatre-list .theatre{
     color: white;
@@ -337,28 +349,31 @@ td div {
     display: flex;
     gap: 50px;
 }
-table{
+
+
+/*HALL*/
+#whole-main{
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-section{
-    position:absolute;
-    width: 50%;
-    height: 400px;
-    top: 220px;
-    margin: 20px;
-    background-color: rgb(0, 0, 0);
-    opacity: 0.97;
-    padding: 50px;
-    opacity: 0;
-    pointer-events: none;
 }
 #trapezoid{
     margin-top: 20px;
-    display: inline-block;
+    margin-bottom: 30px;
     height: 60px;
-    width: 100%;
+    width: 80%;
     background-color: white;
-    clip-path: polygon(18% 0%, 80% 0%, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+    padding: 20px;
+}
+table{
+    display: flex;
+    justify-content: center;
+}
+#hall{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    width: 1000px;
+    margin-left: 20px;
+    margin-right: 20px;
 }

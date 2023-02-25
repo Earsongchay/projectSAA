@@ -1,116 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Movie Seat Booking</title>
-    <link rel="stylesheet" href="sstyle.css">
-    
-  </head>
-  <body>
-    <div class="movie-container">
-      <label> Select a movie:</label>
-      <select id="movie">
-        <option value="10">Black Panther: Wakanda Forever</option>
-        <option value="20">DC League of Super-Pets</option>
-        <option value="30">Black Adam</option>
-        <option value="40">John Wick</option>
-      </select>
-    </div>
+<Section id="popup">
+  <div id="trapezoid"></div>
+  <table id="table">
+    <?php
+    $sql = "SELECT h.seat_id ,rows_number, seat_number,sd.scheduledetail_id FROM seats
+            JOIN halls h ON h.seat_id = seats.seat_id JOIN Branches_Halls bh ON bh.hall_id = h.hall_id JOIN scheduleDetails sd ON sd.hall_branch_id = bh.hall_branch_id
+            WHERE sd.scheduledetail_id = 23";
+    $result = $conn->query($sql);
+    $row_r = "";
+    $row_c = "";
+    if ($result !== false && $result->num_rows > 0) {
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
 
-    <ul class="showcase">
-      <li>
-        <div class="seat"></div>
-        <small>Available</small>
-      </li>
-      <li>
-        <div class="seat selected"></div>
-        <small>Selected</small>
-      </li>
-      <li>
-        <div class="seat sold"></div>
-        <small>Sold</small>
-      </li>
-    </ul>
-
-    <div class="container">
-      <div class="screen"></div>
-
-      <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "_movies";
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
-        $name = "Hello World";
-
-        $sql = "SELECT seat_id ,rows_number, seat_number FROM seats where hall_id=2";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            // output data of each row
-          while ($row = $result->fetch_assoc()) {
-            for ($i = 1; $i <= $row["rows_number"]; $i++) {?>
-              <div class="row"><?php echo $i ?>
-                <?php 
-                for ($j = 1; $j <= $row["seat_number"]; $j++) { ?>
-                <div class="seat"></div>
-                <?php 
-                }?>
-              </div>
-            <?php 
+        for ($i = 1; $i < $row['rows_number'] + 1; $i++) { ?>
+          <tr id="row" value="<?php echo $i ?>">
+            <?php
+            for ($j = 1; $j < $row['seat_number'] + 1; $j++) { ?>
+              <td id="col">
+                <div id=<?php echo $i . $j ?>></div>
+              </td>
+            <?php
             }
+            ?>
+          </tr>
+        <?php
+        } ?>
+        <div id="row" value="<?php $row_r = $row['rows_number'];
+                              echo $row['rows_number']; ?>"></div>
+        <div id="col" value="<?php $row_c = $row['seat_number'];
+                              echo $row['seat_number']; ?>"> </div>
+    <?php }
+    } ?>
+  </table>
+  <!-- SOLD SEATS  -->
+  <?php
+  $sdBooked = $_COOKIE['sdBooked'];
+  $sdBooked = str_replace(',', '', $sdBooked);
+  $sql = "SELECT seats_booked ,sd.scheduledetail_id FROM seats s join halls h ON s.seat_id=h.seat_id JOIN branches_halls bh ON bh.hall_id = h.hall_id JOIN  scheduledetails sd ON sd.hall_branch_id = bh.hall_branch_id JOIN bookingDetails bd ON sd.scheduledetail_id= bd.scheduledetail_id WHERE sd.scheduledetail_id = $sdBooked;";
+  $result = $conn->query($sql);
+  $seats_booked = '';
+  while ($row = $result->fetch_assoc()) {
+    $seats_booked .= $row['seats_booked'];
+  }
+  ?><div id="bseat" value="<?php echo $seats_booked ?>"></div>
+
+</Section>
+<script>
+  //CLICK ON TIME 
+  var count = 0;
+  var id = [];
+  var value = [];
+  var show_tb = document.getElementById('popup');
+  <?php
+  for ($a = 1; $a < $count; $a++) { ?>
+    id[<?php echo  $a; ?>] = document.getElementById('<?php echo $a; ?>');
+
+    id[<?php echo  $a; ?>].addEventListener("click", (e) => {
+      show_tb.classList.add('show');
+      value[<?php echo $a; ?>] = document.getElementById('<?php echo $a; ?>').getAttribute('value');
+      document.cookie = "sdBooked=" + value;
+
+      show_tb.removeAttribute('id');
+    });
+
+  <?php } ?>
+
+
+  //SOLD SEAT
+  var r = [];
+  var c = [];
+  var booked = document.getElementById('bseat').getAttribute('value').split(",");
+  for (let i = 0; i < booked.length; i++) {
+    if (booked[i].charAt(0) == 'A') {
+      r[i] = 1;
+      c[i] = booked[i].replace('A', '');
+    } else if (booked[i].charAt(0) == 'B') {
+      r[i] = 2;
+      c[i] = booked[i].replace('B', '');
+    } else if (booked[i].charAt(0) == 'C') {
+      r[i] = 3;
+      c[i] = booked[i].replace('C', '');
+    } else if (booked[i].charAt(0) == 'D') {
+      r[i] = 4;
+      c[i] = booked[i].replace('D', '');
+    } else if (booked[i].charAt(0) == 'E') {
+      r[i] = 5;
+      c[i] = booked[i].replace('E', '');
+    } else if (booked[i].charAt(0) == 'F') {
+      r[i] = 6;
+      c[i] = booked[i].replace('F', '');
+    } else if (booked[i].charAt(0) == 'G') {
+      r[i] = 7;
+      c[i] = booked[i].replace('G', '');
+    }
+  }
+  var search = [];
+  for (let i = 0; i < r.length; i++) {
+    search[i] = r[i] + '' + c[i];
+  }
+  var col = document.getElementById('col').getAttribute('value');
+  var row = document.getElementById('row').getAttribute('value');
+  for (let i = 1; i <= row; i++) {
+    for (let j = 1; j <= col; j++) {
+      if (search[j - 1] == i + '' + j) {
+        var z = document.getElementById(search[j - 1]);
+        z.classList.add('sold');
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+  //CLICK SEAT
+  var booked_seats = [];
+  var b = [];
+  var book_c = 0, book_r = 0;
+
+  <?php
+  for ($i = 1; $i <= $row_r; $i++) {
+    for ($j = 1; $j <= $row_c; $j++) { ?>
+      <?php {
+      ?>
+        b['<?php echo $i . $j; ?>'] = document.getElementById('<?php echo $i . $j; ?>');
+        b['<?php echo $i . $j; ?>'].addEventListener("click", (e) => {
+          b['<?php echo $i . $j; ?>'].classList.toggle('active');
+          if (b['<?php echo $i . $j; ?>'].classList.contains('active') && !b['<?php echo $i . $j; ?>'].classList.contains('sold')) {
+            book_r = <?php echo $i ?>;
+            book_c = <?php echo $j ?>;
+            if (book_r == 1) {
+              book_r = "A"
+            } else if (book_r == 2) {
+              book_r = "B"
+            } else if (book_r == 3) {
+              book_r = "C"
+            } else if (book_r == 4) {
+              book_r = "D"
+            } else if (book_r == 5) {
+              book_r = "E"
+            } else if (book_r == 6) {
+              book_r = "F"
+            } else {
+              book_r = "G"
+            }
+            booked_seats.push(`${book_r}${book_c}`);
+            count++;
+            document.getElementById('seat').innerHTML = booked_seats.sort()
+            document.getElementById('total-price').innerHTML = count;
+          } else if (b['<?php echo $i . $j; ?>'].classList.contains('sold')) {
+            alert("This seat is unavailable.");
+          } else {
+            booked_seats.pop(`${book_r}${book_c}`);
+            document.getElementById('seat').innerHTML = booked_seats.sort()
+            count--;
+            document.getElementById('total-price').innerHTML = count;
           }
-        }
-        
-        ?>
-      <!-- <div class="row">
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-      </div>
-      <div class="row">
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-      </div>
-      <div class="row">
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat"></div>
-        <div class="seat sold"></div>
-        <div class="seat"></div>
-      </div> -->
-    </div>
-
-    <p class="text"> Selected Seat
-      <span id="count">0</span>. TOTAL PRICE $
-      <span id="total">0</span
-      >
-    </p>
-
-    <script src="sscript.js"></script>
-  </body>
-</html>
+        });
+  <?php }
+    }
+  } ?>
+</script>
+<script src="script.js"></script>
