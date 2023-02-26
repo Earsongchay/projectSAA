@@ -1,57 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>homepage</title>
-    <link rel="stylesheet" href="style.css" />
+use Vtiful\Kernel\Format;
 
-</head>
+if (isset($_REQUEST['submit'])) {
+    $date_a = $_REQUEST['name'];
 
-<body>
-    <p id="co"></p>
-    <p id="demo"></p>
-    <div class="container">
-        <div class="screen"></div>
-
-        <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "db_movies";
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
-
-        $sql = "SELECT seat_id ,rows_number, seat_number FROM seats where hall_id=2";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            // output data of each row
-            while ($row = $result->fetch_assoc()) {
-                for ($i = 1; $i <= $row["rows_number"]; $i++) { ?>
-                    <div class="rows"><?php echo $i ?>
-                        <?php
-                        for ($j = 1; $j <= $row["seat_number"]; $j++) { ?>
-                            <div class="seatt"></div>
-                        <?php
-                        } ?>
-                    </div>
-        <?php
-                }
+    echo "<h1>" . hoursandmins($date_a, '%02d:%02d') . "</h1>";
+}
+function hoursandmins($time)
+{
+    if ($time < 1) {
+        return ;
+    } else {
+        $hour = floor($time / 60);
+        $min = ($time % 60);
+        if ($min == 1) {
+            $format = '%01dh %02d minute';
+        } else {
+            $format = '%01dh %02d minutes';
+            if ($hour < 1) {
+                $format = '%02d minutes';
+                return sprintf($format, $min);
             }
         }
-
-        ?>
-    </div>
-    <script src="script.js"></script>
-</body>
-
-</html>
+        return sprintf($format, $hour, $min);
+    }
+}
+?>
+<form action="" method="post">
+    <input type="text" name="name" id="name">
+    <button type="submit" id="submit" name="submit">Submit</button>
+</form>

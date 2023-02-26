@@ -5,47 +5,46 @@ $msg = "";
 
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
-	$end_date=$_POST['End_date'];
-	$end_date = substr($end_date,0,10) . " " .substr($end_date,-5). ":00";
-	//echo date('h:m',$end_date);
-	$start_date=$_POST['Start_date'];
-	$start_date = substr($start_date,0,10) . " " .substr($start_date,-5). ":00";
-	if($start_date<date("Y-m-d h:m:s")){
+	$end_date = $_POST['End_date'];
+	$end_date = date( 'y-m-d H:i:s',strtotime($end_date));
+	$start_date = $_POST['Start_date'];
+	$start_date = date( 'Y-m-d h:i:s',strtotime($start_date));
+	if ($start_date < date("Y-m-d H:i:s")) {
 		print("<h1>Start Date must be in the future. Thanks!</h1>");
-		echo $start_date ."<br>";
-		echo date("Y/m/d h:m:s");
+		echo $start_date . "<br>";
+		echo date("Y/m/d H:i:s");
 		goto A;
 	}
-	$hall_id=$_POST['hall_id'];
-	$branch_id=$_POST['branch_id'];
-	$movie_id=$_POST['movie_id'];
-		
-	
-	$sql='SELECT hall_branch_id FROM Branches_Halls WHERE
-	branch_id='. $branch_id .' and hall_id ='. $hall_id;
+	$hall_id = $_POST['hall_id'];
+	$branch_id = $_POST['branch_id'];
+	$movie_id = $_POST['movie_id'];
+
+
+	$sql = 'SELECT hall_branch_id FROM Branches_Halls WHERE
+	branch_id=' . $branch_id . ' and hall_id =' . $hall_id;
 	$result = $connection->query($sql);
-	$row=$result->fetch_assoc();
+	$row = $result->fetch_assoc();
 	$hall_branch_id = $row['hall_branch_id'];
-	$sql="INSERT INTO scheduledetails (scheduleDetail_id, schedule_id, movie_id, start_time, end_time, 	hall_branch_id) VALUES (NULL, NULL,$movie_id,'$start_date','$end_date',$hall_branch_id)";
+	$sql = "INSERT INTO scheduledetails (scheduleDetail_id, schedule_id, movie_id, start_time, end_time, 	hall_branch_id) VALUES (NULL, NULL,$movie_id,'$start_date','$end_date',$hall_branch_id)";
 	mysqli_query($connection,$sql);
 
 
 	echo '<h1>Sucessfully Insert into Schedule Details</h1><br>';
-	echo 'Sql :' . $sql .'<br>';
-
-	echo 'schedule_id : '. $schedule_id. "<br>";
-	echo 'branch_id : '. $branch_id . "<br>";
-	echo 'hall_id : '. $hall_id. "<br>";
-	echo 'hall_branch_id : '. $hall_branch_id. "<br>";
-	echo 'end_date : '. $end_date. "<br>";
-	echo 'movie_id : ' . $movie_id. "<br>";
-	echo  'start_date : '. $start_date;
-		A:
+	echo 'Sql :' . $sql . '<br>';
+	echo 'schedule_id : ' . $schedule_id . "<br>";
+	echo 'branch_id : ' . $branch_id . "<br>";
+	echo 'hall_id : ' . $hall_id . "<br>";
+	echo 'hall_branch_id : ' . $hall_branch_id . "<br>";
+	echo 'end_date : ' . $end_date . "<br>";
+	echo 'movie_id : ' . $movie_id . "<br>";
+	echo  'start_date : ' . $start_date;
+	A:
 }
 
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Image Upload</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -91,9 +90,9 @@ if (isset($_POST['upload'])) {
 				</select>
 			<?php }
 			?>
-            <br>
-            <?php
-            $sql = "SELECT movie_id, movie_title FROM movies";
+			<br>
+			<?php
+			$sql = "SELECT movie_id, movie_title FROM movies";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0) {
 				// output data of each row
@@ -107,8 +106,8 @@ if (isset($_POST['upload'])) {
 			<?php }
 			?>
 			<br>
-            <?php
-            $sql = "SELECT hall_id, hall_name FROM halls";
+			<?php
+			$sql = "SELECT hall_id, hall_name FROM halls";
 			$result = $conn->query($sql);
 			if ($result->num_rows > 0) {
 				// output data of each row
@@ -122,17 +121,17 @@ if (isset($_POST['upload'])) {
 			<?php }
 			?>
 			<br>
-            <label>Start time</label>
+			<label>Start time</label>
 			<div class="form-group">
-                <input class="form-control" type="datetime-local" name="Start_date"/>
-            </div>
+				<input class="form-control" type="datetime-local" name="Start_date" />
+			</div>
 			<label>End time</label>
-			<?php 
+			<?php
 
 			?>
 			<div class="form-group">
-                <input class="form-control" type="datetime-local" name="End_date"/>
-            </div>
+				<input class="form-control" type="datetime-local" name="End_date" />
+			</div>
 			<div class="form-group">
 				<button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
 			</div>

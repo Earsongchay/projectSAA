@@ -221,7 +221,7 @@ session_start();
                       </a>
 
                       <time datetime="2022"><?php $release_date = $row['release_date'];
-                                            echo substr($release_date, 6)  ?></time>
+                                            echo date('Y',strtotime($release_date))  ?></time>
                     </div>
 
                     <div class="card-meta">
@@ -327,7 +327,7 @@ session_start();
                     </a>
 
                     <time datetime="2022"><?php $release_date = $row['release_date'];
-                                          echo substr($release_date, 6)  ?></time>
+                                          echo date('Y',strtotime($release_date))  ?></time>
                   </div>
 
                   <div class="card-meta">

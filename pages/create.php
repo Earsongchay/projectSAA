@@ -2,29 +2,46 @@
 error_reporting(0);
 
 $msg = "";
-
+function hoursandmins($time)
+{
+	if ($time < 1) {
+		return;
+	} else {
+		$hour = floor($time / 60);
+		$min = ($time % 60);
+		if ($min == 1) {
+			$format = '%01dh %02d minute';
+		} else {
+			$format = '%01dh %02d minutes';
+			if ($hour < 1) {
+				$format = '%02d minutes';
+				return sprintf($format, $min);
+			}
+		}
+		return sprintf($format, $hour, $min);
+	}
+}
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
-
-
 	$title = $_POST['txt_title'];
 	$durations = $_POST['txt_durations'];
+	$durations = hoursandmins($durations);
 	$rating = $_POST['rating'];
 	$description = $_POST['description'];
 	$release_date = $_POST['release_date'];
+	$release_date = date('Y-m-d', strtotime($release_date));
 	$url_trailer = $_POST['url_trailor'];
 	$movie_status = $_POST['movie_status'];
 	//escape single quote
- 	
+
 	$filename = $_FILES["uploadfile"]["name"];
 	$tempname = $_FILES["uploadfile"]["tmp_name"];
 	$folder = "../image/" . $filename;
 	$categorie = $_POST['categorie'];
 	$db = mysqli_connect("localhost", "root", "", "db_movies");
-	$description = mysqli_real_escape_string($db,$description);
+	$description = mysqli_real_escape_string($db, $description);
 	$title = trim($title);
 	$sql = "INSERT INTO movies (movie_title, durations, movie_image, categorie_id,rating,description,release_date,movie_status,url_trailer) VALUES ('$title','$durations','$filename',$categorie,$rating,'$description','$release_date','$movie_status','$url_trailer')";
-
 	// Execute query
 	mysqli_query($db, $sql);
 
@@ -102,7 +119,7 @@ if (isset($_POST['upload'])) {
 				<input class="form-control" type="text" name="txt_title" placeholder="Title" />
 			</div>
 			<div class="form-group">
-				<input class="form-control" type="text" name="txt_durations" placeholder="durations" />
+				<input class="form-control" type="text" name="txt_durations" placeholder="How many minutes long are the movies?" />
 			</div>
 			<div class="form-group">
 				<input class="form-control" type="text" name="rating" placeholder="rating" />
@@ -111,7 +128,7 @@ if (isset($_POST['upload'])) {
 				<input class="form-control" type="text" name="description" placeholder="description" />
 			</div>
 			<div class="form-group">
-				<input class="form-control" type="text" name="release_date" placeholder="release date" />
+				<input class="form-control" type="date" name="release_date" placeholder="release date" />
 			</div>
 			<div class="form-group">
 				<input class="form-control" type="text" name="url_trailor" placeholder="url trailor" />
