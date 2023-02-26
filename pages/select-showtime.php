@@ -49,7 +49,7 @@ include("db_connect.php")
                         </div>
                         <?php
                         $branch_name = $branch['branch_name'];
-                        $sql_hall = "SELECT hall_name from halls h join branches_halls bh on h.hall_id = bh.hall_id join scheduledetails sd on sd.hall_branch_id = bh.hall_branch_id join branches b on bh.branch_id = b.branch_id
+                        $sql_hall = "SELECT distinct hall_name from halls h join branches_halls bh on h.hall_id = bh.hall_id join scheduledetails sd on sd.hall_branch_id = bh.hall_branch_id join branches b on bh.branch_id = b.branch_id
                                      WHERE sd.movie_id = $id and end_time > now() and b.branch_name = '$branch_name' ";
                         $result_hall = $connection->query($sql_hall);
                         ?>
@@ -63,8 +63,7 @@ include("db_connect.php")
                                     <ul>
                                         <?php
                                         $sql_st = "SELECT start_time ,sd.scheduleDetail_id FROM scheduledetails sd JOIN branches_halls bh ON sd.hall_branch_id = bh.hall_branch_id JOIN branches b ON b.branch_id=bh.branch_id
-                                            JOIN halls h ON h.hall_id=bh.hall_id LEFT JOIN bookingdetails bd
-                                            ON bd.scheduleDetail_id = sd.scheduleDetail_id WHERE movie_id=$id AND start_time>NOW() AND branch_name='$branch_name' AND hall_name='$hall_name'";
+                                            JOIN halls h ON h.hall_id=bh.hall_id  WHERE movie_id=$id AND start_time>NOW() AND branch_name='$branch_name' AND hall_name='$hall_name'";
                                         $result_start_time = $connection->query($sql_st);
                                         if ($result_start_time->num_rows > 0) {
                                             while ($st = $result_start_time->fetch_assoc()) { ?>
@@ -73,8 +72,7 @@ include("db_connect.php")
                                                                                                                                                                                                                         echo date('h:i a', strtotime($time)); ?></a></li>
                                         <?php
                                             }
-                                        }
-                                        ?>
+                                        }   ?>
                                     </ul>
                                 <?php } ?>
                             </div>

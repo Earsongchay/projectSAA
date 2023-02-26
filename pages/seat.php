@@ -27,11 +27,11 @@ $result = $conn->query($sql);
 <body>
     <div id="nav">
         <ul>
-            <li><a href="/movie-detail.html">Movie</a></li>
-            <li><a href="#">Cinemas</a></li>
-            <li><a href="#">Promotion</a></li>
-            <li><a href="#">News & Activities</a></li>
-            <li><a href="#">Contact us</a></li>
+            <li><a href="index.php">Movie</a></li>
+            <li><a href="index.php">Cinemas</a></li>
+            <li><a href="index.php">Promotion</a></li>
+            <li><a href="index.php">News & Activities</a></li>
+            <li><a href="index.php">Contact us</a></li>
         </ul>
     </div>
     <div id="nav-seat">
