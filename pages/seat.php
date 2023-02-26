@@ -19,7 +19,7 @@ $result = $conn->query($sql);
 
 <head>
     <title>
-        <Select>seat</Select>
+        SELECT YOUR SEAT
     </title>
     <link rel="stylesheet" href="../css/movie-detail.css">
 </head>
@@ -77,10 +77,15 @@ $result = $conn->query($sql);
                 ON sd.scheduledetail_id= bd.scheduledetail_id WHERE sd.scheduledetail_id =$sdBooked";
             $result = $conn->query($sql);
             $seats_booked = '';
+            $count = 1;
             while ($row = $result->fetch_assoc()) {
-                $seats_booked .= $row['seats_booked'];
+                if ($count <= 1) {
+                    $seats_booked .= $row['seats_booked'];
+                } else {
+                    $seats_booked .= "," . $row['seats_booked'];
+                }
+                $count++;
             } ?><div id="bseat" value="<?php echo $seats_booked ?>"></div>
-            <link rel="stylesheet" href="../../css/movie-detail.css">
         </div>
         <div id="summary-details">
             <div id="summary">Summary</div>
@@ -173,7 +178,9 @@ $result = $conn->query($sql);
         var search = [];
         for (let i = 0; i < r.length; i++) {
             search[i] = r[i] + '' + c[i];
+
         }
+        console.log(search);
 
 
         <?php
@@ -221,11 +228,13 @@ $result = $conn->query($sql);
         <?php }
             }
         } ?>
-
-        for (let i = 1; i <= row; i++) {
-            for (let j = 1; j <= col; j++) {
-                if (search[j - 1] == i + '' + j) {
-                    var z = document.getElementById(search[j - 1]);
+        var k = "";
+        search.sort();
+        for (let i = 1; i <= r.length; i++) {
+            for (let j = 1; j <= c.length; j++) {
+                k = i + '' + j;
+                if (search.includes(`${k}`)) {
+                    var z = document.getElementById(`${k}`);
                     z.classList.add('sold');
                 }
             }
