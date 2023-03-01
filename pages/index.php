@@ -145,11 +145,6 @@ session_start();
 
     </div>
   </header>
-
-
-
-
-
   <main>
     <article>
       <!--
@@ -244,7 +239,6 @@ session_start();
                               } ?></data>
                       </div>
                     </div>
-
                   </div>
                 </li>
             <?php }

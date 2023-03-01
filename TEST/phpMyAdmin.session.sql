@@ -1,3 +1,3 @@
-SELECT h.seat_id ,rows_number, seat_number,sd.scheduledetail_id FROM seats
-            JOIN halls h ON h.seat_id = seats.seat_id JOIN Branches_Halls bh ON bh.hall_id = h.hall_id JOIN scheduleDetails sd ON sd.hall_branch_id = bh.hall_branch_id
-            WHERE sd.scheduledetail_id = 23
+SELECT distinct branch_name,bh.branch_id,distinct date(start_time) FROM scheduledetails sd JOIN branches_halls bh on bh.hall_branch_id = sd.hall_branch_id JOIN branches b on bh.branch_id = b.branch_id
+                                WHERE sd.movie_id = 24 AND end_time > NOW();
+

@@ -1,11 +1,8 @@
 <?php
 
-use Vtiful\Kernel\Format;
-
 if (isset($_REQUEST['submit'])) {
-    $date_a = $_REQUEST['name'];
-
-    echo "<h1>" . hoursandmins($date_a, '%02d:%02d') . "</h1>";
+   $a =$_FILES['name']['name'];
+   echo $a;
 }
 function hoursandmins($time)
 {
@@ -27,7 +24,7 @@ function hoursandmins($time)
     }
 }
 ?>
-<form action="" method="post">
-    <input type="text" name="name" id="name">
+<form action="" method="post" enctype="multipart/form-data">
+    <input type="file" name="name" id="name">
     <button type="submit" id="submit" name="submit">Submit</button>
 </form>
