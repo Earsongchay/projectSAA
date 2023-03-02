@@ -101,24 +101,26 @@ $result = $conn->query($sql);
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-            $sql = "SELECT movie_title, durations, movie_image,categorie_id  FROM movies m join scheduleDetails sd ON m.movie_id = sd.movie_id WHERE scheduleDetail_id = $sdBooked;";
+            $ticketPrice= "";
+            $sql = "SELECT movie_title,branch_name,start_time, durations,ticket_price, movie_image,categorie_id  FROM movies m join scheduleDetails sd ON m.movie_id = sd.movie_id JOIN branches_halls bh ON bh.hall_branch_id = sd.hall_branch_id JOIN Branches b ON b.branch_id = bh.branch_id WHERE scheduleDetail_id = $sdBooked;";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 // output data of each row
-                $row = $result->fetch_assoc() ?>
-
+                $row = $result->fetch_assoc() ;
+                $ticketPrice= $row['ticket_price'] ;?>
+                 
                 <div id="box">
                     <div id="image"><img src="../image/<?php echo $row['movie_image']; ?>" alt=""></div>
                     <div id="description">
                         <div id="title"> <?php echo $row['movie_title'] ?> </div>
-                        <div id="schedule"><big><b>Showtime</b></big> <br> <small> ---- <br> 12th June 2022</small></div>
+                        <div id="schedule"><big><b>Showtime</b></big> <br> <br><small> <?php echo $row['branch_name'];  ?> <br><?php echo date('d M Y  h:i a',strtotime($row['start_time'])) ?></small></div>
                     </div>
                 </div>
             <?php }
             ?>
-            <div id="seat">SEAT(s)&nbsp &nbsp &nbsp &nbsp :&nbsp &nbsp<div id="selected-seat"> ...</div>
+            <div id="seat">SEAT(S) &nbsp &nbsp &nbsp: &nbsp &nbsp &nbsp<div id="selected-seat"> ...</div>
             </div>
-            <div id="total">TOTAL Price &nbsp: &nbsp <div id="total-price">17</div>
+            <div id="total">TOTAL PRICE &nbsp: &nbsp <div id="total-price">...</div>
             </div>
             <div id="customer-info">
                 Customer Information
@@ -214,15 +216,16 @@ $result = $conn->query($sql);
                             }
                             booked_seats.push(`${book_r}${book_c}`);
                             count++;
-                            document.getElementById('seat').innerHTML = booked_seats.sort()
-                            document.getElementById('total-price').innerHTML = count;
+                            document.getElementById('selected-seat').innerHTML = booked_seats.sort()
+                            document.getElementById('total-price').innerHTML = '$'+ count * '<?php echo $ticketPrice ?>';
                         } else if (b['<?php echo $i . $j; ?>'].classList.contains('sold')) {
                             alert("This seat is unavailable.");
                         } else {
                             booked_seats.pop(`${book_r}${book_c}`);
-                            document.getElementById('seat').innerHTML = booked_seats.sort()
+                            document.getElementById('selected-seat').innerHTML = booked_seats.sort()
                             count--;
-                            document.getElementById('total-price').innerHTML = count;
+                            document.getElementById('total-price').innerHTML ='$'+ count * '<?php echo $ticketPrice ?>';
+                
                         }
                     });
         <?php }

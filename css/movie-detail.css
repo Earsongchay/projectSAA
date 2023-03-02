@@ -278,7 +278,7 @@ body{
 }
 
 .widget{
-    width: 500px;
+    width: 400px;
     -color: rgb(101, 7, 7);
     padding: 10px;
     display: flex;
@@ -311,7 +311,7 @@ body{
     margin-top: 5px;
 }
 .widget .schedule-list .theatre-list ul{
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
     padding-inline-start: 0px;
 }
