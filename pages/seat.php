@@ -1,9 +1,41 @@
 <?php
+include('db_connect.php');
+$sdBooked = $_REQUEST['scheduleID'];
+$branch = "";
+$hall = "";
+$title = "";
+if (isset($_REQUEST['reserve'])) {
+    $phone = $_REQUEST['phone_number'];
+    $first_name = $_REQUEST['first_name'];
+    $last_name = $_REQUEST['last_name'];
+    echo $first_name . $last_name . $phone;
+    $date_issue = date('Y-m-d h:i:s');
+    $subject = "SS11 CINEMA TICKET ";
+    $header = "earsongchay@gmail.com";
+    $to = $_COOKIE['email'];
+    $ticket = $_COOKIE['seat'];
+    $amount = str_replace('$', '', $_COOKIE['amount']);
+    $message = "Thank you very much. You've ordered ticket(s) for <b>" . $title . "</b> at " . $branch . ". \r\nTicket : $ticket\r\nHall :  " . $hall . "";
+    $message .= "\r\nAnd please see the counter to check the bill.";
+    //mail($to, $subject, $message); 
+    $sql = "INSERT INTO bookingdetails (bookingDetail_id, amount, issueDate, seats_booked, scheduleDetail_id) VALUES (NULL,$amount ,'$date_issue', '$ticket', $sdBooked);";
+    setcookie('email', null, -1);
+    setcookie('amount', null, -1);
+    setcookie('seat', null, -1);
+    if (str_contains($to,'@' ) && $phone && $last_name && $first_name) {
+        //mysqli_query($connection, $sql);
+        header("Location: /movies/Movies/pages/");
+        exit();
+    } else {
+        header("Location: /movies/Movies/pages/seat.php?scheduleID=$sdBooked");
+        exit();
+    }
+}
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "db_movies";
-$sdBooked = $_REQUEST['scheduleID'];
+
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
@@ -38,7 +70,7 @@ $result = $conn->query($sql);
         <ul>
             <li><a href="#" id="first">SELECT SHOWTIME</a></li>
             <li><a href="#" id="second">SELECT SEAT(S)</a></li>
-            <li><a href="#">RESERVE | BUY</a></li>
+            <li><a href="#" id="third">RESERVE | BUY</a></li>
         </ul>
     </div>
     <div id="whole-main">
@@ -101,19 +133,23 @@ $result = $conn->query($sql);
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-            $ticketPrice= "";
-            $sql = "SELECT movie_title,branch_name,start_time, durations,ticket_price, movie_image,categorie_id  FROM movies m join scheduleDetails sd ON m.movie_id = sd.movie_id JOIN branches_halls bh ON bh.hall_branch_id = sd.hall_branch_id JOIN Branches b ON b.branch_id = bh.branch_id WHERE scheduleDetail_id = $sdBooked;";
+            $ticketPrice = "";
+            $sql = "SELECT movie_title,branch_name,start_time,hall_name, durations,ticket_price, movie_image,categorie_id  FROM movies m join scheduleDetails sd ON m.movie_id = sd.movie_id JOIN branches_halls bh ON bh.hall_branch_id = sd.hall_branch_id JOIN Branches b ON b.branch_id = bh.branch_id JOIN halls h ON h.hall_id=bh.hall_id WHERE scheduleDetail_id = $sdBooked;";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 // output data of each row
-                $row = $result->fetch_assoc() ;
-                $ticketPrice= $row['ticket_price'] ;?>
-                 
+                $row = $result->fetch_assoc();
+                $ticketPrice = $row['ticket_price'];
+                $branch = $row['branch_name'];
+                $hall = $row['hall_name'];
+                $title = $row['movie_title'];
+            ?>
+
                 <div id="box">
                     <div id="image"><img src="../image/<?php echo $row['movie_image']; ?>" alt=""></div>
                     <div id="description">
                         <div id="title"> <?php echo $row['movie_title'] ?> </div>
-                        <div id="schedule"><big><b>Showtime</b></big> <br> <br><small> <?php echo $row['branch_name'];  ?> <br><?php echo date('d M Y  h:i a',strtotime($row['start_time'])) ?></small></div>
+                        <div id="schedule"><big><b>Showtime</b></big> <br> <br><small> <?php echo $row['branch_name'];  ?> <br><?php echo date('d M Y  h:i a', strtotime($row['start_time'])) ?></small></div>
                     </div>
                 </div>
             <?php }
@@ -124,17 +160,17 @@ $result = $conn->query($sql);
             </div>
             <div id="customer-info">
                 Customer Information
-                <form>
-                    <input type="text" class="name" placeholder="FIRST NAME">
-                    <input type="text" class="name" placeholder="LAST NAME">
-                    <input type="text" class="name" placeholder="PHONE NUMBER">
-                    <input type="text" class="name" placeholder="EMAIL">
-                </form>
+                <form method="post">
+                    <input type="text" class="name" name="first_name" placeholder="FIRST NAME">
+                    <input type="text" class="name" name="last_name" placeholder="LAST NAME">
+                    <input type="text" class="name" name="phone_number" placeholder="PHONE NUMBER">
+                    <input type="text" class="name" id="email" name="email" placeholder="EMAIL">
             </div>
             <div id="btn">
-                <a href="#" id="payment">PAYMENT</a>
-                <a href="#" id="reserve">RESERVE</a>
+                <button id="payment" name="payment">PAYMENT</button>
+                <button id="reserve" name="reserve">RESERVE</button>
             </div>
+            </form>
         </div>
     </div>
     <script>
@@ -150,7 +186,7 @@ $result = $conn->query($sql);
         var b = [];
         var book_c = 0,
             book_r = 0;
-
+        var btnReserve = document.getElementById('reserve');
 
         for (let i = 0; i < booked.length; i++) {
             if (booked[i].charAt(0) == 'A') {
@@ -184,7 +220,23 @@ $result = $conn->query($sql);
         }
         console.log(search);
 
+        function showOnBtn() {
+            document.getElementById('third').style.backgroundColor = 'white';
+            document.getElementById('third').style.color = 'hsl(228, 13%, 15%)';
+            document.getElementById('payment').style.opacity = '1';
+            btnReserve.style.opacity = '1';
+            document.getElementById('payment').style.pointerEvents = "all";
+            btnReserve.style.pointerEvents = "all";
+        }
 
+        function hideOnBtn() {
+            document.getElementById('third').style.backgroundColor = 'hsl(228, 13%, 15%)';
+            document.getElementById('third').style.color = 'white';
+            document.getElementById('payment').style.opacity = '0';
+            btnReserve.style.opacity = '0';
+        }
+        var selectedSeat = document.getElementById('selected-seat').innerHTML;
+        var totalPrice = document.getElementById('total-price').innerHTML;
         <?php
         for ($i = 1; $i <= $row_r; $i++) {
             for ($j = 1; $j <= $row_c; $j++) { ?>
@@ -216,21 +268,35 @@ $result = $conn->query($sql);
                             }
                             booked_seats.push(`${book_r}${book_c}`);
                             count++;
-                            document.getElementById('selected-seat').innerHTML = booked_seats.sort()
-                            document.getElementById('total-price').innerHTML = '$'+ count * '<?php echo $ticketPrice ?>';
+                            selectedSeat = booked_seats.sort()
+                            totalPrice = '$' + count * '<?php echo $ticketPrice ?>';
+                            if (count != 0) {
+                                showOnBtn();
+                            } else {
+                                hideOnBtn();
+                            }
+                            document.cookie = "amount=" + totalPrice;
+                            document.cookie = "seat=" + booked_seats;
                         } else if (b['<?php echo $i . $j; ?>'].classList.contains('sold')) {
                             alert("This seat is unavailable.");
                         } else {
                             booked_seats.pop(`${book_r}${book_c}`);
-                            document.getElementById('selected-seat').innerHTML = booked_seats.sort()
+                            selectedSeat = booked_seats.sort()
                             count--;
-                            document.getElementById('total-price').innerHTML ='$'+ count * '<?php echo $ticketPrice ?>';
-                
+                            totalPrice = '$' + count * '<?php echo $ticketPrice ?>';
+                            if (count == 0) {
+                                hideOnBtn()
+                            } else {
+                                showOnBtn();
+                            }
+                            document.cookie = "amount=" + totalPrice;
+                            document.cookie = "seat=" + booked_seats;
                         }
                     });
         <?php }
             }
         } ?>
+
         var k = "";
         search.sort();
         for (let i = 1; i <= r.length; i++) {
@@ -242,7 +308,29 @@ $result = $conn->query($sql);
                 }
             }
         }
+        let email = "";
+        btnReserve.addEventListener("click", () => {
+            email = document.getElementById('email').value;
+            if (!email.includes('@',0)) {
+                alert('Your email is incorrect');
+            } else {
+                alert('Thank you. You have sucessfully ordered the ticket(s). Please check your email!!');
+                document.cookie = "email=" + email;
+            }
+        });
     </script>
+    <?php
+
+
+    if (isset($_REQUEST['payment'])) {
+        $to = $_COOKIE['email'];
+        $ticket = $_COOKIE['seat'];
+        $message = "Thank you very much. You've ordered ticket(s) for <b>" . $row['movie_title'] . "</b> at " . $row['branch_name'] . ". \r\nTicket : $ticket\r\nHall :  " . $row['hall_name'] . "";
+        //mail($to,$subject,$message);
+        $sql = "INSERT INTO bookingdetails (bookingDetail_id, amount, issueDate, seats_booked, scheduleDetail_id) VALUES (NULL,$amount ,'$date_issue', '$ticket', $sdBooked);";
+        // mysqli_query($connection, $sql);
+    }
+    ?>
 </body>
 
 </html>
