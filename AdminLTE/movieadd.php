@@ -3,20 +3,47 @@ include("db_connect.php");
 error_reporting(0);
 $edit_state = false;
 
+function hoursandmins($time)
+{
+    if ($time < 1) {
+        return;
+    } else {
+        $hour = floor($time / 60);
+        $min = ($time % 60);
+        if ($min == 1) {
+            $format = '%01dh %02d minute';
+        } else {
+            $format = '%01dh %02d minutes';
+            if ($hour < 1) {
+                $format = '%02d minutes';
+                return sprintf($format, $min);
+            }
+        }
+        return sprintf($format, $hour, $min);
+    }
+}
 //edit
-if (isset($_POST['edit'])) {
+if (isset($_POST['editt'])) {
     $edit_state = true;
-    $product_id = $_POST['edit'];
+    $movie_id = $_POST['editt'];
     try {
-        $queryedit = "SELECT product_id, product_name, qty, price, image_front, image_back,categorie_id from products where product_id = $product_id limit 1";
-        $result = $connection->query($queryedit);
+        $sql = "SELECT movie_id, movie_title, durations, movie_image, categorie_id, rating, 
+                description, movie_status, release_date, url_trailer FROM movies where movie_id = $movie_id limit 1";
+
+        $result = mysqli_query($connection, $sql);
         $row = $result->fetch_assoc();
-        $product_name = $row['product_name'];
-        $qty = $row['qty'];
-        $price = $row['price'];
-        $image_front = $row['image_front'];
-        $image_back = $row['image_back'];
+        $movie_id = $row['movie_id'];
+        $movie_title = $row['movie_title'];
+        $durations = $row['durations'];
+        $durations = hoursandmins($durations);
+        $movie_image = $row['movie_image'];
         $categorie_id = $row['categorie_id'];
+        $rating = $row['rating'];
+        $description = $row['description'];
+        $movie_status = $row['movie_status'];
+        $release_date = $row['release_date'];
+        $url_trailer = $row['url_trailer'];
+
 
         $query = "SELECT categorie_name from categories where categorie_id = $categorie_id limit 1";
         $resultt = $connection->query($query);
@@ -27,81 +54,54 @@ if (isset($_POST['edit'])) {
     }
 }
 //update
-if (isset($_POST['update'])) {
+if (isset($_POST['updatem'])) {
     $edit_state = false;
+    $movie_id = $_POST['updatem'];
+    echo $id;
+    $title = $_POST['txt_title'];
+    $durations = $_POST['txt_durations'];
+    $durations = hoursandmins($durations);
+    // $rating = $_POST['rating'];
+    $description = $_POST['description'];
+    $release_date = $_POST['release_date'];
+    $release_date = date('Y-m-d', strtotime($release_date));
+    // $url_trailer = $_POST['url_trailor'];
+    // $url_trailer = mysqli_real_escape_string($connection, $url_trailer);
+    //escape single quote
 
-    $product_id = $_POST['update'];
-
-    $product_name = $_POST['product_name'];
-    //mysqli_real_escape_string = use to escape single/double quote when user input
-    $product_name = mysqli_real_escape_string($connection, $product_name);
-    $qty = $_POST['qty'];
-    $price = $_POST['price'];
-    $categorie_id = $_POST['categorie'];
-
-    $sql = "UPDATE products SET product_name='$product_name', 
-                qty='$qty', price='$price' , categorie_id = '$categorie_id'
-                WHERE product_id=$product_id LIMIT 1";
+    $sql = "UPDATE movies SET movie_title = 'title',durations = '$durations', description = '$description', release_date = '$release_date' WHERE movie_id = $movie_id LIMIT 1";
     mysqli_query($connection, $sql);
     if (mysqli_errno($connection) > 0) {
         die(mysqli_error($connection));
     }
-    $product_name = "";
-    $qty = "";
-    $price = "";
+    $description = "";
+    header("location: movie.php");
 }
-
-//delete
-if (isset($_POST["removed"])) {
-    $id = $_POST['removed'];
-    try {
-        $sql = "DELETE FROM scheduledetails where scheduleDetail_id = $id limit 1";
-        mysqli_query($connection, $sql);
-        // header("location: movie.php");
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-
 // If upload button is clicked ...
-if (isset($_POST['upload'])) {
+if (isset($_POST['uploadm'])) {
+    $title = $_POST['txt_title'];
+    $durations = $_POST['txt_durations'];
+    $durations = hoursandmins($durations);
+    $rating = $_POST['rating'];
+    $description = $_POST['description'];
+    $description = mysqli_real_escape_string($connection, $description);
+    $release_date = $_POST['release_date'];
+    $release_date = date('Y-m-d', strtotime($release_date));
+    $url_trailer = $_POST['url_trailor'];
+    $url_trailer = mysqli_real_escape_string($connection, $url_trailer);
+    $movie_status = $_POST['movie_status'];
+    //escape single quote
 
-    $product_name = $_POST['product_name'];
-    //mysqli_real_escape_string = use to escape single/double quote when user input
-    $product_name = mysqli_real_escape_string($connection, $product_name);
-    $qty = $_POST['qty'];
-    $price = $_POST['price'];
-
-    // $image_front
-    $tempname = $_FILES["image_front"]["tmp_name"];
-    $extension = explode('.', $_FILES["image_front"]["name"]);
-    $extension = end($extension);
-    $image_front = "../image/" . time() . '_' . md5(rand()) . '.' . $extension;
-
-    // $image_back
-    $tempnamee = $_FILES["image_back"]["tmp_name"];
-    $extensionn = explode('.', $_FILES["image_back"]["name"]);
-    $extensionn = end($extensionn);
-    $image_back = "../image/" . time() . '_' . md5(rand()) . '.' . $extensionn;
-
+    $filename = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+    $folder = "../image/" . $filename;
     $categorie = $_POST['categorie'];
-
-    // Get all the submitted data from the form
-    $sql = "INSERT INTO products (product_name, qty, price,image_front, image_back, categorie_id) VALUES ('$product_name','$qty','$price','$image_front','$image_back','$categorie')";
-
+    $title = trim($title);
+    $sql = "INSERT INTO movies (movie_title, durations, movie_image, categorie_id,rating,description,release_date,movie_status,url_trailer) 
+    VALUES ('$title','$durations','$filename',$categorie,$rating,'$description','$release_date','$movie_status','$url_trailer')";
     // Execute query
     mysqli_query($connection, $sql);
-
-    // Now let's move the uploaded image into the folder: image
-    if (move_uploaded_file($tempname, $image_front)) {
-        if (move_uploaded_file($tempnamee, $image_back)) {
-            $alert = "<h3> uploaded successfully!</h3>";
-        } else {
-            $alert = "<h3> Failed to upload!</h3>";
-        }
-    } else {
-        $alert = "<h3> Failed to upload!</h3>";
-    }
+    move_uploaded_file($tempname, $folder);
 }
 ?>
 <!DOCTYPE html>
@@ -121,6 +121,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/style.css">
     <link rel="stylesheet" href="dist/css/adminlte.css">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
@@ -144,7 +145,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="scheduleDetail.php" class="nav-link">Schedule Details</a>
                 </li>
-
             </ul>
 
             <!-- Right navbar links -->
@@ -347,35 +347,85 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                <div class="row">
-                    <div class="col-sm-10 text-center">Add new movies</div>
-                    <div class="col-sm-2">
-                        <a href="movieadd.php" class="btn btn-success" style="width: 100%;">Add</a>
-                    </div>
 
-                </div>
             </div>
             <!-- /.content-header -->
 
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
+
+                    <!-- object/ -->
                     <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                            <form method="POST" action="" enctype="multipart/form-data">
 
+                                <?php
+                                $sql = "SELECT categorie_id, categorie_name  FROM categories";
+                                $result = $connection->query($sql);
 
+                                if ($result->num_rows > 0) {
+                                ?>
+                                    <label for="exampleFormControlSelect1">Products Categories</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="categorie">
+                                        <?php while ($row = $result->fetch_assoc()) { ?>
+                                            <option value="<?php echo $row['categorie_id'] ?>"> <?php echo $row['categorie_name'] ?></option>
+                                        <?php } ?>
 
-                        <!-- object/ -->
+                                    </select>
+                                <?php
+                                }
+                                ?>
+                                <br>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="txt_title" value="<?php echo $movie_title ?>" placeholder="Title" />
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="txt_durations" value="<?php echo $durations ?>" placeholder="How many minutes long are the movies?" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="image_front">Image</label>
+                                    <input class="form-control" type="file" name="uploadfile" id="image_front" />
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="rating" value="<?php echo $rating ?>" placeholder="rating" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" name="desc" value="<?php echo $description ?>">
+                                    <textarea id="desc" class="form-control" name="description" rows="4" placeholder="Description"></textarea>
 
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="date" name="release_date" value="<?php echo $release_date ?>" placeholder="release date" />
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="url_trailor" value="<?php echo $url_trailer ?>" placeholder="url trailor" />
+                                </div>
+                                <select class="form-control" id="exampleFormControlSelect1" name="movie_status" value="<?php echo $movie_status ?>">
+                                    <option value="up coming">up coming</option>
+                                    <option value="now showing">now showing</option>
+                                </select><br>
 
+                                <div class="form-group">
+                                    <?php if ($edit_state == false) { ?>
+                                        <button class="btn btn-success" type="submit" name="uploadm">SAVE</button>
+                                    <?php } else { ?>
+                                        <button class="btn btn-success" type="submit" value="<?php echo $movie_id ?>" name="updatem">UPDATE</button>
+                                    <?php } ?>
+                                </div>
 
-
-
-                        <!-- end object -->
-
-
-
+                            </form>
+                        </div>
+                        <div class="col-sm-2"></div>
                     </div>
-                    <!-- /.row -->
+
+
+                    <!-- end object -->
+
+
+
+
                 </div><!-- /.container-fluid -->
             </div>
             <!-- /.content -->
@@ -412,6 +462,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
+    <script>
+        var des = $('input[name="desc"]').val();
+
+        document.getElementById('desc').value = des;
+    </script>
 </body>
 
 </html>

@@ -50,7 +50,6 @@ if (isset($_POST['update'])) {
     $qty = "";
     $price = "";
 }
-
 //delete
 if (isset($_POST["removed"])) {
     $id = $_POST['removed'];

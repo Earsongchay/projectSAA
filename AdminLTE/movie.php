@@ -3,53 +3,7 @@ include("db_connect.php");
 error_reporting(0);
 $edit_state = false;
 
-//edit
-if (isset($_POST['edit'])) {
-    $edit_state = true;
-    $product_id = $_POST['edit'];
-    try {
-        $queryedit = "SELECT product_id, product_name, qty, price, image_front, image_back,categorie_id from products where product_id = $product_id limit 1";
-        $result = $connection->query($queryedit);
-        $row = $result->fetch_assoc();
-        $product_name = $row['product_name'];
-        $qty = $row['qty'];
-        $price = $row['price'];
-        $image_front = $row['image_front'];
-        $image_back = $row['image_back'];
-        $categorie_id = $row['categorie_id'];
 
-        $query = "SELECT categorie_name from categories where categorie_id = $categorie_id limit 1";
-        $resultt = $connection->query($query);
-        $row = $resultt->fetch_assoc();
-        $categorie_name = $row['categorie_name'];
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-//update
-if (isset($_POST['update'])) {
-    $edit_state = false;
-
-    $product_id = $_POST['update'];
-
-    $product_name = $_POST['product_name'];
-    //mysqli_real_escape_string = use to escape single/double quote when user input
-    $product_name = mysqli_real_escape_string($connection, $product_name);
-    $qty = $_POST['qty'];
-    $price = $_POST['price'];
-    $categorie_id = $_POST['categorie'];
-
-    $sql = "UPDATE products SET product_name='$product_name', 
-                qty='$qty', price='$price' , categorie_id = '$categorie_id'
-                WHERE product_id=$product_id LIMIT 1";
-    mysqli_query($connection, $sql);
-    if (mysqli_errno($connection) > 0) {
-        die(mysqli_error($connection));
-    }
-    $product_name = "";
-    $qty = "";
-    $price = "";
-}
 
 //delete
 if (isset($_POST["remove"])) {
@@ -66,51 +20,9 @@ if (isset($_POST["remove"])) {
         echo $e->getMessage();
     }
 }
-function hoursandmins($time)
-{
-    if ($time < 1) {
-        return;
-    } else {
-        $hour = floor($time / 60);
-        $min = ($time % 60);
-        if ($min == 1) {
-            $format = '%01dh %02d minute';
-        } else {
-            $format = '%01dh %02d minutes';
-            if ($hour < 1) {
-                $format = '%02d minutes';
-                return sprintf($format, $min);
-            }
-        }
-        return sprintf($format, $hour, $min);
-    }
-}
-// If upload button is clicked ...
-if (isset($_POST['uploadm'])) {
-    $title = $_POST['txt_title'];
-    $durations = $_POST['txt_durations'];
-    $durations = hoursandmins($durations);
-    $rating = $_POST['rating'];
-    $description = $_POST['description'];
-    $release_date = $_POST['release_date'];
-    $release_date = date('Y-m-d', strtotime($release_date));
-    $url_trailer = $_POST['url_trailor'];
-    $movie_status = $_POST['movie_status'];
-    //escape single quote
 
-    $filename = $_FILES["uploadfile"]["name"];
-    $tempname = $_FILES["uploadfile"]["tmp_name"];
-    $folder = "../image/" . $filename;
-    $categorie = $_POST['categorie'];
-    $db = mysqli_connect("localhost", "root", "", "db_movies");
-    $description = mysqli_real_escape_string($connection, $description);
-    $title = trim($title);
-    $sql = "INSERT INTO movies (movie_title, durations, movie_image, categorie_id,rating,description,release_date,movie_status,url_trailer) 
-    VALUES ('$title','$durations','$filename',$categorie,$rating,'$description','$release_date','$movie_status','$url_trailer')";
-    // Execute query
-    mysqli_query($connection, $sql);
-    move_uploaded_file($tempname, $folder);
-}
+// If upload button is clicked ...
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -147,8 +59,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a href="movie.php" class="nav-link">Movies</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
+                    <a href="schedule.php" class="nav-link">Schedule</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
                     <a href="scheduleDetail.php" class="nav-link">Schedule Details</a>
                 </li>
+
             </ul>
 
             <!-- Right navbar links -->
@@ -326,6 +242,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="schedule.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Schedule</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="scheduleDetail.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Schedule Details</p>
@@ -345,64 +267,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-
-                <form method="POST" action="" enctype="multipart/form-data">
-
-                    <?php
-                    $sql = "SELECT categorie_id, categorie_name  FROM categories";
-                    $result = $connection->query($sql);
-
-                    if ($result->num_rows > 0) {
-                    ?>
-                        <label for="exampleFormControlSelect1">Products Categories</label>
-                        <select class="form-control" id="exampleFormControlSelect1" name="categorie">
-                            <?php while ($row = $result->fetch_assoc()) { ?>
-                                <option value="<?php echo $row['categorie_id'] ?>"> <?php echo $row['categorie_name'] ?></option>
-                            <?php } ?>
-
-                        </select>
-                    <?php
-                    }
-                    ?>
-                    <br>
-                    <div class="form-group">
-                        <input class="form-control" type="text" name="txt_title" placeholder="Title" />
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" type="text" name="txt_durations" placeholder="How many minutes long are the movies?" />
-                    </div>
-                    <div class="form-group">
-                        <label for="image_front">Image</label>
-                        <input class="form-control" type="file" name="uploadfile" id="image_front" />
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" type="text" name="rating" placeholder="rating" />
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" name="description" rows="4" placeholder="Description"></textarea>
-                        <!-- <input class="form-control" type="text" name="description" placeholder="description" /> -->
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" type="date" name="release_date" placeholder="release date" />
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" type="text" name="url_trailor" placeholder="url trailor" />
-                    </div>
-                    <select class="form-control" id="exampleFormControlSelect1" name="movie_status">
-                        <option value="up coming">up coming</option>
-                        <option value="now showing">now showing</option>
-                    </select><br>
-
-                    <div class="form-group">
-                        <?php if ($edit_state == false) { ?>
-                            <button class="btn btn-success" type="submit" name="uploadm">SAVE</button>
-                        <?php } else { ?>
-                            <button class="btn btn-success" type="submit" value="<?php echo $product_id ?>" name="updatem">UPDATE</button>
-                        <?php } ?>
+                <div class="row">
+                    <div class="col-sm-10 text-center">Add new movies</div>
+                    <div class="col-sm-2">
+                        <a href="movieadd.php" class="btn btn-success" style="width: 100%;">Add</a>
                     </div>
 
-                </form>
-
+                </div>
             </div>
             <!-- /.content-header -->
 
@@ -411,11 +282,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row">
 
-
-
                         <!-- object/ -->
-
-
                         <?php
                         $sql = "SELECT movie_id, movie_title, durations, movie_image, categorie_id, rating, 
                         description, movie_status, release_date, url_trailer FROM movies order by movie_id desc";
@@ -426,25 +293,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         }
                         ?>
                         <table class="table">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">movie_id</th>
-                                    <th scope="col">movie_title</th>
+                                    <th scope="col" class="text-center">movie_title</th>
                                     <th scope="col">durations</th>
                                     <th scope="col">movie_image</th>
                                     <th scope="col">rating</th>
                                     <th scope="col">movie_status</th>
                                     <th scope="col">release_date</th>
-                                    <!-- <th scope="col">url_trailer</th> -->
-                                    <!-- <th scope="col">description</th> -->
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                                     <tr>
-                                        <th><?php echo $row["movie_id"]; ?></th>
-                                        <th><?php echo $row["movie_title"]; ?></th>
+                                        <th scope="row"><?php echo $row["movie_id"]; ?></th>
+                                        <th style="max-width: 150px;"><?php echo $row["movie_title"]; ?></th>
                                         <th><?php echo $row["durations"]; ?></th>
                                         <th>
                                             <div class="image"><img src="../image/<?php echo $row["movie_image"]; ?>" alt=""></div>
@@ -452,13 +317,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th><?php echo $row["rating"]; ?></th>
                                         <th><?php echo $row["movie_status"]; ?></th>
                                         <th><?php echo $row["release_date"]; ?></th>
-                                        <!-- <th> <div class="url"><?php echo $row["url_trailer"]; ?></div> </th> -->
-                                        <!-- <th><?php echo $row["description"]; ?></th> -->
+                                        <?php ?>
 
                                         <th>
+                                            <input type="hidden" name="des" value="<?php echo $row["description"] ?>">
+                                            <form method="POST" action="movieadd.php" enctype="multipart/form-data">
+                                                <button type="submit" name="editt" value="<?php echo $row['movie_id'] ?>" class="btn btn-primary edit">Edit</button>
+                                            </form>
                                             <form method="POST" action="" enctype="multipart/form-data">
-                                                <!-- <div class="btn btn-primary edit">edit</div> -->
-                                                <button type="submit" name="edit" value="<?php echo $row['movie_id'] ?>" class="btn btn-primary edit">Edit</button>
                                                 <button type="submit" name="remove" value="<?php echo $row['movie_id'] ?>" class="btn btn-danger">Remove</button>
                                             </form>
                                         </th>
@@ -468,7 +334,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
                         <!-- end object -->
-
 
 
                     </div>
