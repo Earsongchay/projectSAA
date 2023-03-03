@@ -22,7 +22,7 @@ if (isset($_REQUEST['reserve'])) {
     setcookie('email', null, -1);
     setcookie('amount', null, -1);
     setcookie('seat', null, -1);
-    if (str_contains($to,'@' ) && $phone && $last_name && $first_name) {
+    if (str_contains($to, '@') && $phone && $last_name && $first_name) {
         //mysqli_query($connection, $sql);
         header("Location: /movies/Movies/pages/");
         exit();
@@ -268,8 +268,8 @@ $result = $conn->query($sql);
                             }
                             booked_seats.push(`${book_r}${book_c}`);
                             count++;
-                            selectedSeat = booked_seats.sort()
-                            totalPrice = '$' + count * '<?php echo $ticketPrice ?>';
+                            document.getElementById('selected-seat').innerHTML = booked_seats.sort()
+                            document.getElementById('total-price').innerHTML = '$' + count * '<?php echo $ticketPrice ?>';
                             if (count != 0) {
                                 showOnBtn();
                             } else {
@@ -281,9 +281,9 @@ $result = $conn->query($sql);
                             alert("This seat is unavailable.");
                         } else {
                             booked_seats.pop(`${book_r}${book_c}`);
-                            selectedSeat = booked_seats.sort()
+                            document.getElementById('selected-seat').innerHTML = booked_seats.sort()
                             count--;
-                            totalPrice = '$' + count * '<?php echo $ticketPrice ?>';
+                            document.getElementById('total-price').innerHTML = '$' + count * '<?php echo $ticketPrice ?>';
                             if (count == 0) {
                                 hideOnBtn()
                             } else {
@@ -311,7 +311,7 @@ $result = $conn->query($sql);
         let email = "";
         btnReserve.addEventListener("click", () => {
             email = document.getElementById('email').value;
-            if (!email.includes('@',0)) {
+            if (!email.includes('@', 0)) {
                 alert('Your email is incorrect');
             } else {
                 alert('Thank you. You have sucessfully ordered the ticket(s). Please check your email!!');
