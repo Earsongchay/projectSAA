@@ -136,11 +136,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="movie.php" class="nav-link">Movies</a>
+                    <a href="booking.php" class="nav-link">Booking</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="schedule.php" class="nav-link">Schedule</a>
+                    <a href="movie.php" class="nav-link">Movies</a>
                 </li>
+                
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="scheduleDetail.php" class="nav-link">Schedule Details</a>
                 </li>
@@ -316,17 +317,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="movie.php" class="nav-link active">
+                                    <a href="booking.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Booking</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="movie.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Movie</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="schedule.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Schedule</p>
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a href="scheduleDetail.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>

@@ -40,9 +40,11 @@ if (isset($_POST['editt'])) {
         $categorie_id = $row['categorie_id'];
         $rating = $row['rating'];
         $description = $row['description'];
+        $description = mysqli_real_escape_string($connection, $description);
         $movie_status = $row['movie_status'];
         $release_date = $row['release_date'];
         $url_trailer = $row['url_trailer'];
+
 
 
         $query = "SELECT categorie_name from categories where categorie_id = $categorie_id limit 1";
@@ -57,19 +59,19 @@ if (isset($_POST['editt'])) {
 if (isset($_POST['updatem'])) {
     $edit_state = false;
     $movie_id = $_POST['updatem'];
-    echo $id;
     $title = $_POST['txt_title'];
     $durations = $_POST['txt_durations'];
     $durations = hoursandmins($durations);
     // $rating = $_POST['rating'];
     $description = $_POST['description'];
+    $description = mysqli_real_escape_string($connection, $description);
     $release_date = $_POST['release_date'];
     $release_date = date('Y-m-d', strtotime($release_date));
-    // $url_trailer = $_POST['url_trailor'];
-    // $url_trailer = mysqli_real_escape_string($connection, $url_trailer);
+    $url_trailer = $_POST['url_trailor'];
+    $url_trailer = mysqli_real_escape_string($connection, $url_trailer);
     //escape single quote
 
-    $sql = "UPDATE movies SET movie_title = 'title',durations = '$durations', description = '$description', release_date = '$release_date' WHERE movie_id = $movie_id LIMIT 1";
+    $sql = "UPDATE movies SET movie_title = 'title',durations = '$durations', description = '$description', release_date = '$release_date', url_trailer = '$url_trailer' WHERE movie_id = $movie_id LIMIT 1";
     mysqli_query($connection, $sql);
     if (mysqli_errno($connection) > 0) {
         die(mysqli_error($connection));
@@ -137,11 +139,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="movie.php" class="nav-link">Movies</a>
+                    <a href="booking.php" class="nav-link">Booking</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="schedule.php" class="nav-link">Schedule</a>
+                    <a href="movie.php" class="nav-link">Movies</a>
                 </li>
+                
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="scheduleDetail.php" class="nav-link">Schedule Details</a>
                 </li>
@@ -316,17 +319,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="movie.php" class="nav-link active">
+                                    <a href="booking.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>booking</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="movie.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Movie</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="schedule.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Schedule</p>
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a href="scheduleDetail.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -360,9 +364,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
                             <form method="POST" action="" enctype="multipart/form-data">
-            
+
                                 <?php
-                                
+
                                 $sql = "SELECT categorie_id, categorie_name  FROM categories";
                                 $result = $connection->query($sql);
 
@@ -370,10 +374,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 ?>
                                     <label for="exampleFormControlSelect1">Products Categories</label>
                                     <select class="form-control" id="exampleFormControlSelect1" name="categorie">
-                                        <?php while ($row = $result->fetch_assoc()) { ?>
-                                            <option value="<?php echo $row['categorie_id'] ?>"> <?php echo $row['categorie_name'] ?></option>
-            
-                                        <?php } ?>
+                                        <?php while ($row = $result->fetch_assoc()) {
+                                            if ($row['categorie_id'] == $categorie_id) { ?>
+
+                                                <option selected value="<?php echo $row['categorie_id'] ?>"> <?php echo $row['categorie_name'] ?></option>
+                                            <?php } else { ?>
+                                                <option value="<?php echo $row['categorie_id'] ?>"> <?php echo $row['categorie_name'] ?></option>
+                                        <?php }
+                                        } ?>
 
                                     </select>
                                 <?php
@@ -394,7 +402,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input class="form-control" type="text" name="rating" value="<?php echo $rating ?>" placeholder="rating" />
                                 </div>
                                 <div class="form-group">
-                                    <input type="hidden" name="desc" value="<?php echo $description ?>">
+                                    <input type="hidden" name="desc" value="<?php echo addslashes($description); ?>">
                                     <textarea id="desc" class="form-control" name="description" rows="4" placeholder="Description"></textarea>
 
                                 </div>
@@ -402,7 +410,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input class="form-control" type="date" name="release_date" value="<?php echo $release_date ?>" placeholder="release date" />
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="text" name="url_trailor" value="<?php echo $url_trailer ?>" placeholder="url trailor" />
+                                    <input class="form-control" type="text" name="url_trailor" value='<?php echo $url_trailer; ?>' placeholder="url trailor" />
                                 </div>
                                 <select class="form-control" id="exampleFormControlSelect1" name="movie_status" value="<?php echo $movie_status ?>">
                                     <option value="up coming">up coming</option>

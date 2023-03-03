@@ -4,24 +4,32 @@ error_reporting(0);
 $edit_state = false;
 
 //edit
-if (isset($_POST['edit'])) {
+if (isset($_POST['edits'])) {
     $edit_state = true;
-    $product_id = $_POST['edit'];
-    try {
-        $queryedit = "SELECT product_id, product_name, qty, price, image_front, image_back,categorie_id from products where product_id = $product_id limit 1";
-        $result = $connection->query($queryedit);
-        $row = $result->fetch_assoc();
-        $product_name = $row['product_name'];
-        $qty = $row['qty'];
-        $price = $row['price'];
-        $image_front = $row['image_front'];
-        $image_back = $row['image_back'];
-        $categorie_id = $row['categorie_id'];
+    $id = $_POST['edits'];
 
-        $query = "SELECT categorie_name from categories where categorie_id = $categorie_id limit 1";
+    try {
+        $sql = "SELECT scheduleDetail_id,movie_id,
+        ticket_price FROM scheduledetails where scheduleDetail_id = $id limit 1";
+        $result = mysqli_query($connection, $sql);
+        $row = $result->fetch_assoc();
+        // $scheduleDetail_id = $row['scheduleDetail_id'];
+        $movie_id = $row['movie_id'];
+        // $start_time = $row['start_time'];
+        // $end_time = $row['end_time'];
+        // $hall_branch_id = $row['hall_branch_id'];
+        $ticket_price = $row['ticket_price'];
+
+
+        // $query = "SELECT movie_title from movies where movie_id = $movie_id limit 1";
+        // $resultt = $connection->query($query);
+        // $row = $resultt->fetch_assoc();
+        // $movie_title = $row['movie_title'];
+
+        $query = "SELECT movie_title from movies where movie_id = $movie_id limit 1";
         $resultt = $connection->query($query);
         $row = $resultt->fetch_assoc();
-        $categorie_name = $row['categorie_name'];
+        $movie_title = $row['movie_title'];
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
@@ -52,7 +60,7 @@ if (isset($_POST['update'])) {
 }
 
 // If upload button is clicked ...
-if (isset($_POST['upload'])) {
+if (isset($_POST['uploads'])) {
     $end_date = $_POST['End_date'];
     $end_date = date('y-m-d H:i:s', strtotime($end_date));
     $start_date = $_POST['Start_date'];
@@ -123,11 +131,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="movie.php" class="nav-link">Movies</a>
+                    <a href="booking.php" class="nav-link">Booking</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="schedule.php" class="nav-link">Schedule</a>
+                    <a href="movie.php" class="nav-link">Movies</a>
                 </li>
+
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="scheduleDetail.php" class="nav-link">Schedule Details</a>
                 </li>
@@ -303,17 +312,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="movie.php" class="nav-link active">
+                                    <a href="booking.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>booking</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="movie.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Movie</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="schedule.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Schedule</p>
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a href="scheduleDetail.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -352,7 +362,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <form method="POST" action="" enctype="multipart/form-data">
 
                                 <?php
-                                
+
                                 $sql = "SELECT branch_id, branch_name FROM branches";
                                 $result = $connection->query($sql);
                                 if ($result->num_rows > 0) {
@@ -371,13 +381,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <?php
                                 $sql = "SELECT movie_id, movie_title FROM movies";
                                 $result = $connection->query($sql);
-                                if ($result->num_rows > 0) {
-                                    // output data of each row
-                                ?>
+                                if ($result->num_rows > 0) { ?>
                                     <select class="form-control" id="exampleFormControlSelect1" name="movie_id">
-                                        <?php while ($row = $result->fetch_assoc()) { ?>
-                                            <option value="<?php echo $row['movie_id'] ?>"> <?php echo $row['movie_title'] ?></option>
-                                        <?php }
+                                        <?php while ($row = $result->fetch_assoc()) {
+                                            if ($row['movie_id'] == $movie_id) { ?>
+                                                <option selected value="<?php echo $row['movie_id'] ?>"> <?php echo $row['movie_title'] ?></option>
+                                            <?php } 
+                                            else { ?>
+                                                <option value="<?php echo $row['movie_id'] ?>"> <?php echo $row['movie_title'] ?></option>
+                                            <?php }
+                                        }
                                         ?>
                                     </select>
                                 <?php }
@@ -399,7 +412,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 ?>
                                 <br>
                                 <div class="form-group">
-                                    <input class="form-control" type="text" name="ticket_price" placeholder="Ticket Price"/>
+                                    <input class="form-control" type="text" name="ticket_price" value="<?php echo $ticket_price ?>" placeholder="Ticket Price" />
                                 </div>
                                 <br>
                                 <label>Start time</label>
@@ -414,7 +427,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input class="form-control" type="datetime-local" name="End_date" />
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
+                                    <?php if ($edit_state == false) { ?>
+                                        <button class="btn btn-success" type="submit" name="uploads">SAVE</button>
+                                    <?php } else { ?>
+                                        <button class="btn btn-success" type="submit" value="<?php echo $movie_id ?>" name="updates">UPDATE</button>
+                                    <?php } ?>
                                 </div>
                             </form>
                         </div>

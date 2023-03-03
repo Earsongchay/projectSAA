@@ -50,10 +50,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="movie.php" class="nav-link">Movies</a>
+                    <a href="booking.php" class="nav-link">Booking</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="schedule.php" class="nav-link">Schedule</a>
+                    <a href="movie.php" class="nav-link">Movies</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="scheduleDetail.php" class="nav-link">Schedule Details</a>
@@ -230,17 +230,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="movie.php" class="nav-link active">
+                                    <a href="booking.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>booking</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="movie.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Movie</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="schedule.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Schedule</p>
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a href="scheduleDetail.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -308,13 +310,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th><?php echo $row["start_time"]; ?></th>
                                         <th><?php echo $row["end_time"]; ?></th>
                                         <th><?php echo $row["hall_branch_id"]; ?></th>
-                                        <th><?php echo $row["ticket_price"]?></th>
+                                        <th><?php echo $row["ticket_price"] ?></th>
                                         <?php ?>
 
                                         <th>
                                             <input type="hidden" name="des" value="<?php echo $row["description"] ?>">
                                             <form method="POST" action="scheduledetailadd.php" enctype="multipart/form-data">
-                                                <button type="submit" name="editt" value="<?php echo $row['scheduleDetail_id'] ?>" class="btn btn-primary edit">Edit</button>
+                                                <button type="submit" name="edits" value="<?php echo $row['scheduleDetail_id'] ?>" class="btn btn-primary edit">Edit</button>
                                             </form>
                                             <form method="POST" action="" enctype="multipart/form-data">
                                                 <button type="submit" name="removed" value="<?php echo $row['scheduleDetail_id'] ?>" class="btn btn-danger">Remove</button>
