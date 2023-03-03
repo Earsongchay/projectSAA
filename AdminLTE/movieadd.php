@@ -360,8 +360,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
                             <form method="POST" action="" enctype="multipart/form-data">
-
+            
                                 <?php
+                                
                                 $sql = "SELECT categorie_id, categorie_name  FROM categories";
                                 $result = $connection->query($sql);
 
@@ -371,6 +372,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <select class="form-control" id="exampleFormControlSelect1" name="categorie">
                                         <?php while ($row = $result->fetch_assoc()) { ?>
                                             <option value="<?php echo $row['categorie_id'] ?>"> <?php echo $row['categorie_name'] ?></option>
+            
                                         <?php } ?>
 
                                     </select>

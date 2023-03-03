@@ -3,53 +3,7 @@ include("db_connect.php");
 error_reporting(0);
 $edit_state = false;
 
-//edit
-if (isset($_POST['edit'])) {
-    $edit_state = true;
-    $product_id = $_POST['edit'];
-    try {
-        $queryedit = "SELECT product_id, product_name, qty, price, image_front, image_back,categorie_id from products where product_id = $product_id limit 1";
-        $result = $connection->query($queryedit);
-        $row = $result->fetch_assoc();
-        $product_name = $row['product_name'];
-        $qty = $row['qty'];
-        $price = $row['price'];
-        $image_front = $row['image_front'];
-        $image_back = $row['image_back'];
-        $categorie_id = $row['categorie_id'];
 
-        $query = "SELECT categorie_name from categories where categorie_id = $categorie_id limit 1";
-        $resultt = $connection->query($query);
-        $row = $resultt->fetch_assoc();
-        $categorie_name = $row['categorie_name'];
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-//update
-if (isset($_POST['update'])) {
-    $edit_state = false;
-
-    $product_id = $_POST['update'];
-
-    $product_name = $_POST['product_name'];
-    //mysqli_real_escape_string = use to escape single/double quote when user input
-    $product_name = mysqli_real_escape_string($connection, $product_name);
-    $qty = $_POST['qty'];
-    $price = $_POST['price'];
-    $categorie_id = $_POST['categorie'];
-
-    $sql = "UPDATE products SET product_name='$product_name', 
-                qty='$qty', price='$price' , categorie_id = '$categorie_id'
-                WHERE product_id=$product_id LIMIT 1";
-    mysqli_query($connection, $sql);
-    if (mysqli_errno($connection) > 0) {
-        die(mysqli_error($connection));
-    }
-    $product_name = "";
-    $qty = "";
-    $price = "";
-}
 
 //delete
 if (isset($_POST["removed"])) {
@@ -63,46 +17,6 @@ if (isset($_POST["removed"])) {
     }
 }
 
-// If upload button is clicked ...
-if (isset($_POST['upload'])) {
-
-    $product_name = $_POST['product_name'];
-    //mysqli_real_escape_string = use to escape single/double quote when user input
-    $product_name = mysqli_real_escape_string($connection, $product_name);
-    $qty = $_POST['qty'];
-    $price = $_POST['price'];
-
-    // $image_front
-    $tempname = $_FILES["image_front"]["tmp_name"];
-    $extension = explode('.', $_FILES["image_front"]["name"]);
-    $extension = end($extension);
-    $image_front = "../image/" . time() . '_' . md5(rand()) . '.' . $extension;
-
-    // $image_back
-    $tempnamee = $_FILES["image_back"]["tmp_name"];
-    $extensionn = explode('.', $_FILES["image_back"]["name"]);
-    $extensionn = end($extensionn);
-    $image_back = "../image/" . time() . '_' . md5(rand()) . '.' . $extensionn;
-
-    $categorie = $_POST['categorie'];
-
-    // Get all the submitted data from the form
-    $sql = "INSERT INTO products (product_name, qty, price,image_front, image_back, categorie_id) VALUES ('$product_name','$qty','$price','$image_front','$image_back','$categorie')";
-
-    // Execute query
-    mysqli_query($connection, $sql);
-
-    // Now let's move the uploaded image into the folder: image
-    if (move_uploaded_file($tempname, $image_front)) {
-        if (move_uploaded_file($tempnamee, $image_back)) {
-            $alert = "<h3> uploaded successfully!</h3>";
-        } else {
-            $alert = "<h3> Failed to upload!</h3>";
-        }
-    } else {
-        $alert = "<h3> Failed to upload!</h3>";
-    }
-}
 ?>
 <!DOCTYPE html>
 <!--
@@ -348,9 +262,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="row">
-                    <div class="col-sm-10 text-center">Add new movies</div>
+                    <div class="col-sm-10 text-center">Add new Schedule Detail</div>
                     <div class="col-sm-2">
-                        <a href="movieadd.php" class="btn btn-success" style="width: 100%;">Add</a>
+                        <a href="scheduledetailadd.php" class="btn btn-success" style="width: 100%;">Add</a>
                     </div>
 
                 </div>
@@ -362,16 +276,56 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row">
 
-
-
                         <!-- object/ -->
+                        <?php
+                        $sql = "SELECT scheduleDetail_id, schedule_id, movie_id, start_time, end_time, 
+                                hall_branch_id, ticket_price FROM scheduledetails order by scheduleDetail_id desc";
 
+                        $result = mysqli_query($connection, $sql);
+                        if (mysqli_errno($connection) > 0) {
+                            die(mysqli_error($connection));
+                        }
+                        ?>
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Schedule ID</th>
+                                    <th scope="col">Movie ID</th>
+                                    <th scope="col">Start Time</th>
+                                    <th scope="col">End Time</th>
+                                    <th scope="col">Hall Branch ID</th>
+                                    <th scope="col">Ticket Price</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                    <tr>
+                                        <th scope="row"><?php echo $row["scheduleDetail_id"]; ?></th>
+                                        <th style="max-width: 150px;"><?php echo $row["schedule_id"]; ?></th>
+                                        <th><?php echo $row["movie_id"]; ?></th>
+                                        <th><?php echo $row["start_time"]; ?></th>
+                                        <th><?php echo $row["end_time"]; ?></th>
+                                        <th><?php echo $row["hall_branch_id"]; ?></th>
+                                        <th><?php echo $row["ticket_price"]?></th>
+                                        <?php ?>
 
-
+                                        <th>
+                                            <input type="hidden" name="des" value="<?php echo $row["description"] ?>">
+                                            <form method="POST" action="scheduledetailadd.php" enctype="multipart/form-data">
+                                                <button type="submit" name="editt" value="<?php echo $row['scheduleDetail_id'] ?>" class="btn btn-primary edit">Edit</button>
+                                            </form>
+                                            <form method="POST" action="" enctype="multipart/form-data">
+                                                <button type="submit" name="removed" value="<?php echo $row['scheduleDetail_id'] ?>" class="btn btn-danger">Remove</button>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                <?php } ?>
+                        </table>
 
 
                         <!-- end object -->
-
 
 
                     </div>

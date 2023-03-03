@@ -50,57 +50,45 @@ if (isset($_POST['update'])) {
     $qty = "";
     $price = "";
 }
-//delete
-if (isset($_POST["removed"])) {
-    $id = $_POST['removed'];
-    try {
-        $sql = "DELETE FROM scheduledetails where scheduleDetail_id = $id limit 1";
-        mysqli_query($connection, $sql);
-        // header("location: movie.php");
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
 
 // If upload button is clicked ...
 if (isset($_POST['upload'])) {
+    $end_date = $_POST['End_date'];
+    $end_date = date('y-m-d H:i:s', strtotime($end_date));
+    $start_date = $_POST['Start_date'];
+    $start_date = date('Y-m-d h:i:s', strtotime($start_date));
+    if ($start_date < date("Y-m-d H:i:s")) {
+        print("<h1>Start Date must be in the future. Thanks!</h1>");
+        echo $start_date . "<br>";
+        echo date("Y/m/d H:i:s");
+        goto A;
+    }
+    $ticket_price = $_POST['ticket_price'];
+    $hall_id = $_POST['hall_id'];
+    $branch_id = $_POST['branch_id'];
+    $movie_id = $_POST['movie_id'];
 
-    $product_name = $_POST['product_name'];
-    //mysqli_real_escape_string = use to escape single/double quote when user input
-    $product_name = mysqli_real_escape_string($connection, $product_name);
-    $qty = $_POST['qty'];
-    $price = $_POST['price'];
 
-    // $image_front
-    $tempname = $_FILES["image_front"]["tmp_name"];
-    $extension = explode('.', $_FILES["image_front"]["name"]);
-    $extension = end($extension);
-    $image_front = "../image/" . time() . '_' . md5(rand()) . '.' . $extension;
-
-    // $image_back
-    $tempnamee = $_FILES["image_back"]["tmp_name"];
-    $extensionn = explode('.', $_FILES["image_back"]["name"]);
-    $extensionn = end($extensionn);
-    $image_back = "../image/" . time() . '_' . md5(rand()) . '.' . $extensionn;
-
-    $categorie = $_POST['categorie'];
-
-    // Get all the submitted data from the form
-    $sql = "INSERT INTO products (product_name, qty, price,image_front, image_back, categorie_id) VALUES ('$product_name','$qty','$price','$image_front','$image_back','$categorie')";
-
-    // Execute query
+    $sql = 'SELECT hall_branch_id FROM Branches_Halls WHERE
+	branch_id=' . $branch_id . ' and hall_id =' . $hall_id;
+    $result = $connection->query($sql);
+    $row = $result->fetch_assoc();
+    $hall_branch_id = $row['hall_branch_id'];
+    $sql = "INSERT INTO scheduledetails (scheduleDetail_id, schedule_id, movie_id, start_time, end_time,hall_branch_id, ticket_price) 
+            VALUES (NULL, NULL,$movie_id,'$start_date','$end_date',$hall_branch_id,$ticket_price)";
     mysqli_query($connection, $sql);
 
-    // Now let's move the uploaded image into the folder: image
-    if (move_uploaded_file($tempname, $image_front)) {
-        if (move_uploaded_file($tempnamee, $image_back)) {
-            $alert = "<h3> uploaded successfully!</h3>";
-        } else {
-            $alert = "<h3> Failed to upload!</h3>";
-        }
-    } else {
-        $alert = "<h3> Failed to upload!</h3>";
-    }
+
+    echo '<h1>Sucessfully Insert into Schedule Details</h1><br>';
+    echo 'Sql :' . $sql . '<br>';
+    echo 'schedule_id : ' . $schedule_id . "<br>";
+    echo 'branch_id : ' . $branch_id . "<br>";
+    echo 'hall_id : ' . $hall_id . "<br>";
+    echo 'hall_branch_id : ' . $hall_branch_id . "<br>";
+    echo 'end_date : ' . $end_date . "<br>";
+    echo 'movie_id : ' . $movie_id . "<br>";
+    echo  'start_date : ' . $start_date;
+    A:
 }
 ?>
 <!DOCTYPE html>
@@ -347,10 +335,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="row">
-                    <div class="col-sm-10 text-center">Add new movies</div>
-                    <div class="col-sm-2">
-                        <a href="movieadd.php" class="btn btn-success" style="width: 100%;">Add</a>
-                    </div>
 
                 </div>
             </div>
@@ -362,15 +346,82 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="row">
 
 
-
+                        <div class="col-sm-2"></div>
                         <!-- object/ -->
+                        <div class="col-sm-8">
+                            <form method="POST" action="" enctype="multipart/form-data">
 
+                                <?php
+                                
+                                $sql = "SELECT branch_id, branch_name FROM branches";
+                                $result = $connection->query($sql);
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                ?>
 
+                                    <select class="form-control" id="exampleFormControlSelect1" name="branch_id">
+                                        <?php while ($row = $result->fetch_assoc()) { ?>
+                                            <option value="<?php echo $row['branch_id'] ?>"> <?php echo $row['branch_name'] ?></option>
+                                        <?php }
+                                        ?>
+                                    </select>
+                                <?php }
+                                ?>
+                                <br>
+                                <?php
+                                $sql = "SELECT movie_id, movie_title FROM movies";
+                                $result = $connection->query($sql);
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                ?>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="movie_id">
+                                        <?php while ($row = $result->fetch_assoc()) { ?>
+                                            <option value="<?php echo $row['movie_id'] ?>"> <?php echo $row['movie_title'] ?></option>
+                                        <?php }
+                                        ?>
+                                    </select>
+                                <?php }
+                                ?>
+                                <br>
+                                <?php
+                                $sql = "SELECT hall_id, hall_name FROM halls";
+                                $result = $connection->query($sql);
+                                if ($result->num_rows > 0) {
+                                    // output data of each row
+                                ?>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="hall_id">
+                                        <?php while ($row = $result->fetch_assoc()) { ?>
+                                            <option value="<?php echo $row['hall_id'] ?>"> <?php echo $row['hall_name'] ?></option>
+                                        <?php }
+                                        ?>
+                                    </select>
+                                <?php }
+                                ?>
+                                <br>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="ticket_price" placeholder="Ticket Price"/>
+                                </div>
+                                <br>
+                                <label>Start time</label>
+                                <div class="form-group">
+                                    <input class="form-control" type="datetime-local" name="Start_date" />
+                                </div>
+                                <label>End time</label>
+                                <?php
 
+                                ?>
+                                <div class="form-group">
+                                    <input class="form-control" type="datetime-local" name="End_date" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
+                                </div>
+                            </form>
+                        </div>
 
 
                         <!-- end object -->
-
+                        <div class="col-sm-2"></div>
 
 
                     </div>
