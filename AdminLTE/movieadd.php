@@ -22,6 +22,24 @@ function hoursandmins($time)
         return sprintf($format, $hour, $min);
     }
 }
+
+
+//delete
+if (isset($_POST["remove"])) {
+    $id = $_POST['remove'];
+    try {
+        $queryimg = "SELECT movie_image from movies where movie_id = $id limit 1";
+        $result = $connection->query($queryimg);
+        $row = $result->fetch_assoc();
+        unlink('../dist/img/' . $row['movie_image']);
+        $sql = "DELETE FROM movies where movie_id = $id limit 1";
+        mysqli_query($connection, $sql);
+        // header("location: movie.php");
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    header("location: movie.php");
+}
 //edit
 if (isset($_POST['editt'])) {
     $edit_state = true;
@@ -62,16 +80,20 @@ if (isset($_POST['updatem'])) {
     $title = $_POST['txt_title'];
     $durations = $_POST['txt_durations'];
     $durations = hoursandmins($durations);
-    // $rating = $_POST['rating'];
+    $rating = $_POST['rating'];
     $description = $_POST['description'];
     $description = mysqli_real_escape_string($connection, $description);
     $release_date = $_POST['release_date'];
     $release_date = date('Y-m-d', strtotime($release_date));
     $url_trailer = $_POST['url_trailor'];
     $url_trailer = mysqli_real_escape_string($connection, $url_trailer);
-    //escape single quote
+    $categorie = $_POST['categorie'];
+    
 
-    $sql = "UPDATE movies SET movie_title = 'title',durations = '$durations', description = '$description', release_date = '$release_date', url_trailer = '$url_trailer' WHERE movie_id = $movie_id LIMIT 1";
+    $sql = "UPDATE movies SET movie_title = '$title',durations = '$durations', 
+    description = '$description', release_date = '$release_date', url_trailer = '$url_trailer',
+    rating = '$rating', categorie_id = '$categorie'
+    WHERE movie_id = $movie_id LIMIT 1";
     mysqli_query($connection, $sql);
     if (mysqli_errno($connection) > 0) {
         die(mysqli_error($connection));
@@ -275,7 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="movie.php" class="brand-link">
+            <a href="../pages/index.php" class="brand-link">
                 <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">ADMIN</span>
             </a>

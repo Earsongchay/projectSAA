@@ -3,26 +3,6 @@ include("db_connect.php");
 error_reporting(0);
 $edit_state = false;
 
-
-
-//delete
-if (isset($_POST["remove"])) {
-    $id = $_POST['remove'];
-    try {
-        $queryimg = "SELECT movie_image from movies where movie_id = $id limit 1";
-        $result = $connection->query($queryimg);
-        $row = $result->fetch_assoc();
-        unlink('../dist/img/' . $row['movie_image']);
-        $sql = "DELETE FROM movies where movie_id = $id limit 1";
-        mysqli_query($connection, $sql);
-        // header("location: movie.php");
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-
-// If upload button is clicked ...
-
 ?>
 <!DOCTYPE html>
 <!--
@@ -192,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="movie.php" class="brand-link">
+            <a href="../pages/index.php" class="brand-link">
                 <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">ADMIN</span>
             </a>
@@ -270,6 +250,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="row">
+                    
                     <div class="col-sm-10 text-center">Add new movies</div>
                     <div class="col-sm-2">
                         <a href="movieadd.php" class="btn btn-success" style="width: 100%;">Add</a>
@@ -298,7 +279,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">movie_id</th>
-                                    <th scope="col" class="text-center">movie_title</th>
+                                    <th scope="col">movie_title</th>
                                     <th scope="col">durations</th>
                                     <th scope="col">movie_image</th>
                                     <th scope="col">rating</th>
@@ -325,8 +306,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <input type="hidden" name="des" value="<?php echo $row["description"] ?>">
                                             <form method="POST" action="movieadd.php" enctype="multipart/form-data">
                                                 <button type="submit" name="editt" value="<?php echo $row['movie_id'] ?>" class="btn btn-primary edit">Edit</button>
-                                            </form>
-                                            <form method="POST" action="" enctype="multipart/form-data">
                                                 <button type="submit" name="remove" value="<?php echo $row['movie_id'] ?>" class="btn btn-danger">Remove</button>
                                             </form>
                                         </th>

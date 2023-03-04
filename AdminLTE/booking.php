@@ -141,7 +141,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="movie.php" class="nav-link">Movies</a>
                 </li>
-                
+
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="scheduleDetail.php" class="nav-link">Schedule Details</a>
                 </li>
@@ -273,7 +273,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="movie.php" class="brand-link">
+            <a href="../pages/index.php" class="brand-link">
                 <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">ADMIN</span>
             </a>
@@ -364,16 +364,58 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row">
 
-
-
                         <!-- object/ -->
 
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Customer ID</th>
+                                    <th scope="col">Invoice Number</th>
+                                    <th scope="col">Issue Date</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Discount</th>
+                                    <th scope="col">VAT</th>
+                                    <th scope="col">Grand Total</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql = "SELECT booking_id,customer_id,invoice_number,issue_date
+                        amount,discount,vat,grand_total FROM booking order by booking_id desc";
 
+                                $result = mysqli_query($connection, $sql);
+                                if (mysqli_errno($connection) > 0) {
+                                    die(mysqli_error($connection));
+                                }
+                                while ($row = mysqli_fetch_assoc($result)) { ?>
+                                    <tr>
+                                        <th scope="row"><?php echo $row["booking_id"]; ?></th>
+                                        <th><?php echo $row["customer_id"]; ?></th>
+                                        <th><?php echo $row["invoice_number"]; ?></th>
+                                        <th><?php echo $row["issue_date"]; ?></th>
+                                        <th><?php echo $row["amount"]; ?></th>
+                                        <th><?php echo $row["discount"]; ?></th>
+                                        <th><?php echo $row["vat"] ?></th>
+                                        <th><?php echo $row["grand_total"] ?></th>
+                                        <?php ?>
 
+                                        <th>
+                                            <input type="hidden" name="des" value="<?php echo $row["description"] ?>">
+                                            <form method="POST" action="scheduledetailadd.php" enctype="multipart/form-data">
+                                                <button type="submit" name="edits" value="<?php echo $row['booking_id'] ?>" class="btn btn-primary edit">Edit</button>
+                                            </form>
+                                            <form method="POST" action="" enctype="multipart/form-data">
+                                                <button type="submit" name="removed" value="<?php echo $row['booking_id'] ?>" class="btn btn-danger">Remove</button>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                <?php } ?>
+                        </table>
 
 
                         <!-- end object -->
-
 
 
                     </div>

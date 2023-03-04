@@ -3,20 +3,6 @@ include("db_connect.php");
 error_reporting(0);
 $edit_state = false;
 
-
-
-//delete
-if (isset($_POST["removed"])) {
-    $id = $_POST['removed'];
-    try {
-        $sql = "DELETE FROM scheduledetails where scheduleDetail_id = $id limit 1";
-        mysqli_query($connection, $sql);
-        // header("location: movie.php");
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <!--
@@ -186,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="movie.php" class="brand-link">
+            <a href="../pages/index.php" class="brand-link">
                 <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">ADMIN</span>
             </a>
@@ -317,8 +303,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <input type="hidden" name="des" value="<?php echo $row["description"] ?>">
                                             <form method="POST" action="scheduledetailadd.php" enctype="multipart/form-data">
                                                 <button type="submit" name="edits" value="<?php echo $row['scheduleDetail_id'] ?>" class="btn btn-primary edit">Edit</button>
-                                            </form>
-                                            <form method="POST" action="" enctype="multipart/form-data">
                                                 <button type="submit" name="removed" value="<?php echo $row['scheduleDetail_id'] ?>" class="btn btn-danger">Remove</button>
                                             </form>
                                         </th>

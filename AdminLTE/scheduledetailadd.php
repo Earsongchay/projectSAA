@@ -3,28 +3,35 @@ include("db_connect.php");
 error_reporting(0);
 $edit_state = false;
 
+
+//delete
+if (isset($_POST["removed"])) {
+    $id = $_POST['removed'];
+    try {
+        $sql = "DELETE FROM scheduledetails where scheduleDetail_id = $id limit 1";
+        mysqli_query($connection, $sql);
+        // header("location: movie.php");
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    header("location: scheduleDetail.php");
+}
 //edit
 if (isset($_POST['edits'])) {
     $edit_state = true;
-    $id = $_POST['edits'];
+    $scheduleDetail_id = $_POST['edits'];
 
     try {
-        $sql = "SELECT scheduleDetail_id,movie_id,
-        ticket_price FROM scheduledetails where scheduleDetail_id = $id limit 1";
+        $sql = "SELECT scheduleDetail_id,movie_id,start_time,end_time,
+        ticket_price FROM scheduledetails where scheduleDetail_id = $scheduleDetail_id limit 1";
         $result = mysqli_query($connection, $sql);
         $row = $result->fetch_assoc();
-        // $scheduleDetail_id = $row['scheduleDetail_id'];
+    
         $movie_id = $row['movie_id'];
-        // $start_time = $row['start_time'];
-        // $end_time = $row['end_time'];
-        // $hall_branch_id = $row['hall_branch_id'];
+        $start_time = $row['start_time'];
+        $end_time = $row['end_time'];
+        $hall_branch_id = $row['hall_branch_id'];
         $ticket_price = $row['ticket_price'];
-
-
-        // $query = "SELECT movie_title from movies where movie_id = $movie_id limit 1";
-        // $resultt = $connection->query($query);
-        // $row = $resultt->fetch_assoc();
-        // $movie_title = $row['movie_title'];
 
         $query = "SELECT movie_title from movies where movie_id = $movie_id limit 1";
         $resultt = $connection->query($query);
@@ -35,30 +42,18 @@ if (isset($_POST['edits'])) {
     }
 }
 //update
-if (isset($_POST['update'])) {
+if (isset($_POST['updates'])) {
     $edit_state = false;
-
-    $product_id = $_POST['update'];
-
-    $product_name = $_POST['product_name'];
-    //mysqli_real_escape_string = use to escape single/double quote when user input
-    $product_name = mysqli_real_escape_string($connection, $product_name);
-    $qty = $_POST['qty'];
-    $price = $_POST['price'];
-    $categorie_id = $_POST['categorie'];
-
-    $sql = "UPDATE products SET product_name='$product_name', 
-                qty='$qty', price='$price' , categorie_id = '$categorie_id'
-                WHERE product_id=$product_id LIMIT 1";
+    $id = $_POST['updates'];
+    $movie_id = $_POST['movie_id'];
+    $ticket_price = $_POST['ticket_price'];
+    $sql = "UPDATE scheduledetails SET ticket_price = '$ticket_price', movie_id='$movie_id' WHERE scheduleDetail_id = $id LIMIT 1";
     mysqli_query($connection, $sql);
     if (mysqli_errno($connection) > 0) {
         die(mysqli_error($connection));
     }
-    $product_name = "";
-    $qty = "";
-    $price = "";
+    header("location: scheduleDetail.php");
 }
-
 // If upload button is clicked ...
 if (isset($_POST['uploads'])) {
     $end_date = $_POST['End_date'];
@@ -85,17 +80,6 @@ if (isset($_POST['uploads'])) {
     $sql = "INSERT INTO scheduledetails (scheduleDetail_id, schedule_id, movie_id, start_time, end_time,hall_branch_id, ticket_price) 
             VALUES (NULL, NULL,$movie_id,'$start_date','$end_date',$hall_branch_id,$ticket_price)";
     mysqli_query($connection, $sql);
-
-
-    echo '<h1>Sucessfully Insert into Schedule Details</h1><br>';
-    echo 'Sql :' . $sql . '<br>';
-    echo 'schedule_id : ' . $schedule_id . "<br>";
-    echo 'branch_id : ' . $branch_id . "<br>";
-    echo 'hall_id : ' . $hall_id . "<br>";
-    echo 'hall_branch_id : ' . $hall_branch_id . "<br>";
-    echo 'end_date : ' . $end_date . "<br>";
-    echo 'movie_id : ' . $movie_id . "<br>";
-    echo  'start_date : ' . $start_date;
     A:
 }
 ?>
@@ -268,7 +252,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="movie.php" class="brand-link">
+            <a href="../pages/index.php" class="brand-link">
                 <img src="dist/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">ADMIN</span>
             </a>
@@ -362,13 +346,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <form method="POST" action="" enctype="multipart/form-data">
 
                                 <?php
-
                                 $sql = "SELECT branch_id, branch_name FROM branches";
                                 $result = $connection->query($sql);
-                                if ($result->num_rows > 0) {
-                                    // output data of each row
-                                ?>
-
+                                if ($result->num_rows > 0) { ?>
                                     <select class="form-control" id="exampleFormControlSelect1" name="branch_id">
                                         <?php while ($row = $result->fetch_assoc()) { ?>
                                             <option value="<?php echo $row['branch_id'] ?>"> <?php echo $row['branch_name'] ?></option>
@@ -386,10 +366,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <?php while ($row = $result->fetch_assoc()) {
                                             if ($row['movie_id'] == $movie_id) { ?>
                                                 <option selected value="<?php echo $row['movie_id'] ?>"> <?php echo $row['movie_title'] ?></option>
-                                            <?php } 
-                                            else { ?>
+                                            <?php } else { ?>
                                                 <option value="<?php echo $row['movie_id'] ?>"> <?php echo $row['movie_title'] ?></option>
-                                            <?php }
+                                        <?php }
                                         }
                                         ?>
                                     </select>
@@ -420,9 +399,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input class="form-control" type="datetime-local" name="Start_date" />
                                 </div>
                                 <label>End time</label>
-                                <?php
-
-                                ?>
                                 <div class="form-group">
                                     <input class="form-control" type="datetime-local" name="End_date" />
                                 </div>
@@ -430,7 +406,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <?php if ($edit_state == false) { ?>
                                         <button class="btn btn-success" type="submit" name="uploads">SAVE</button>
                                     <?php } else { ?>
-                                        <button class="btn btn-success" type="submit" value="<?php echo $movie_id ?>" name="updates">UPDATE</button>
+                                        <button class="btn btn-success" type="submit" value="<?php echo $scheduleDetail_id ?>" name="updates">UPDATE</button>
                                     <?php } ?>
                                 </div>
                             </form>
