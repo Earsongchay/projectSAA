@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'vender/ndex.php',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'a2f5923d0238efed07b3b203b20315cb30302c6f',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.7.1',
+            'version' => '6.7.1.0',
+            'reference' => '49cd7ea3d2563f028d7811f06864a53b1f15ff55',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'stripe/stripe-php' => array(
+            'pretty_version' => 'v10.8.0',
+            'version' => '10.8.0.0',
+            'reference' => '0783c59483641452b957f4b75f9e370f1215a803',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../stripe/stripe-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'vender/ndex.php' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'a2f5923d0238efed07b3b203b20315cb30302c6f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

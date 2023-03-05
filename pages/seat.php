@@ -19,12 +19,13 @@ if (isset($_REQUEST['reserve'])) {
     $message .= "\r\nAnd please see the counter to check the bill.";
     //mail($to, $subject, $message); 
     $sql = "INSERT INTO bookingdetails (bookingDetail_id, amount, issueDate, seats_booked, scheduleDetail_id) VALUES (NULL,$amount ,'$date_issue', '$ticket', $sdBooked);";
-    setcookie('email', null, -1);
-    setcookie('amount', null, -1);
-    setcookie('seat', null, -1);
+
     if (str_contains($to, '@') && $phone && $last_name && $first_name) {
-        //mysqli_query($connection, $sql);
+        mysqli_query($connection, $sql);
         header("Location: /movies/Movies/pages/");
+        setcookie('email', null, -1);
+        setcookie('amount', null, -1);
+        setcookie('seat', null, -1);
         exit();
     } else {
         header("Location: /movies/Movies/pages/seat.php?scheduleID=$sdBooked");
@@ -167,7 +168,10 @@ $result = $conn->query($sql);
                     <input type="text" class="name" id="email" name="email" placeholder="EMAIL">
             </div>
             <div id="btn">
-                <button id="payment" name="payment">PAYMENT</button>
+                <button class="stripe-button" id="payment">
+                    <div class="spinner hidden" id="spinner"></div>
+                    <span id="buttonText">PAY NOW</span>
+                </button>
                 <button id="reserve" name="reserve">RESERVE</button>
             </div>
             </form>
@@ -275,7 +279,7 @@ $result = $conn->query($sql);
                             } else {
                                 hideOnBtn();
                             }
-                            document.cookie = "amount=" + totalPrice;
+                            document.cookie = "amount=" + document.getElementById('total-price').innerHTML;
                             document.cookie = "seat=" + booked_seats;
                         } else if (b['<?php echo $i . $j; ?>'].classList.contains('sold')) {
                             alert("This seat is unavailable.");

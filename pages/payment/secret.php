@@ -1,0 +1,4 @@
+<?php
+define('API_KEY', 'sk_test_51MhSJUGb8tSefwPi9Bq2mN4ywL4B6KfBkqO1XnJQ2HZ5b6UD9CDyDW068tPGPh74U8uSgvrQVO3NdAbjId8smyxN00wgHcPZBk');
+define('PUB_KEY', 'pk_test_51MhSJUGb8tSefwPiL0z1Lbr1FWKNvl6ZARjz6L2pef4ayObQO8QJk0pw3A2x83SG0blozgwSwIN3cVVB0L70Qkr6002DKqL2sB');
+?>

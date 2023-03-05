@@ -1,0 +1,19 @@
+{
+    "name": "vender/ndex.php",
+    "description": "sdf",
+    "autoload": {
+        "psr-4": {
+            "Vender\\NdexPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Earsongchay",
+            "email": "earsongchay@gmail.com"
+        }
+    ],
+    "require": {
+        "stripe/stripe-php": "^10.8",
+        "phpmailer/phpmailer": "^6.7"
+    }
+}

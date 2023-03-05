@@ -270,7 +270,7 @@ body{
     cursor: pointer;
     border: 1px solid rgb(255, 234, 94);
 }
-#summary-details #btn button#payment{
+#summary-details #btn button#btnPayment{
     font-family: 'Heebo', sans-serif;
     font-size: 0.6em;
     text-decoration: none;
