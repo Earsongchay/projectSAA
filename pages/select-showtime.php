@@ -34,14 +34,15 @@ include("db_connect.php")
         </div>
         <div id="select-showtime-details">
             <?php
-            $id = $_REQUEST['movie_id'];$count = 1;
+            $id = $_REQUEST['movie_id'];
+            $count = 1;
             $sql_time = 'SELECT DISTINCT date(start_time) FROM scheduledetails sd JOIN branches_halls bh on bh.hall_branch_id = sd.hall_branch_id JOIN branches b on bh.branch_id = b.branch_id WHERE sd.movie_id =' . $id . ' AND end_time > NOW() LIMIT 3';
             $result_time = $connection->query($sql_time);
             while ($time = $result_time->fetch_assoc()) {
-                $s_time =$time['date(start_time)'];
+                $s_time = $time['date(start_time)'];
             ?>
                 <div id="showtime-details">
-                    
+
                     <?php
                     $sql_branch = "SELECT distinct branch_name,bh.branch_id FROM scheduledetails sd JOIN branches_halls bh on bh.hall_branch_id = sd.hall_branch_id JOIN branches b on bh.branch_id = b.branch_id
                                 WHERE sd.movie_id =$id AND end_time > NOW() AND date(start_time) ='$s_time'";
@@ -60,7 +61,7 @@ include("db_connect.php")
                             $result_hall = $connection->query($sql_hall);
                             ?>
                             <div class="schedule-list">
-                                <div class="location"><?php echo $branch_name ." ( ". $s_time .")"?></div>
+                                <div class="location"><?php echo $branch_name . " ( " . $s_time . ")" ?></div>
                                 <div class="theatre-list">
                                     <?php
                                     while ($hall = $result_hall->fetch_assoc()) {
@@ -73,9 +74,9 @@ include("db_connect.php")
                                             $result_start_time = $connection->query($sql_st);
                                             if ($result_start_time->num_rows > 0) {
                                                 while ($st = $result_start_time->fetch_assoc()) { ?>
-                                                    <li><a id="<?php echo $count; ?>" <?php $sdBooked = $st['scheduleDetail_id']; ?> value="<?php echo $sdBooked; ?>" href="/Movies/Movies/pages/payment/index.php?scheduleID=<?php echo $sdBooked ?>"><?php $time = $st['start_time'];
-                                                                                                                                                                                                                            $count += 1;
-                                                                                                                                                                                                                            echo date('h:i a', strtotime($time)); ?></a></li>
+                                                    <li><a id="<?php echo $count; ?>" <?php $sdBooked = $st['scheduleDetail_id']; ?> value="<?php echo $sdBooked; ?>" href="payment/index.php?scheduleID=<?php echo $sdBooked ?>"><?php $time = $st['start_time'];
+                                                                                                                                                                                                                                    $count += 1;
+                                                                                                                                                                                                                                    echo date('h:i a', strtotime($time)); ?></a></li>
                                             <?php
                                                 }
                                             }   ?>
@@ -84,11 +85,11 @@ include("db_connect.php")
                                 </div>
                             </div>
                         </div>
-                <?php
-                    
-                }
-                ?>
-                </div><?php }?>
+                    <?php
+
+                    }
+                    ?>
+                </div><?php } ?>
         </div>
     </div>
 </body>
