@@ -74,7 +74,7 @@ include("db_connect.php")
                                             $result_start_time = $connection->query($sql_st);
                                             if ($result_start_time->num_rows > 0) {
                                                 while ($st = $result_start_time->fetch_assoc()) { ?>
-                                                    <li><a id="<?php echo $count; ?>" <?php $sdBooked = $st['scheduleDetail_id']; ?> value="<?php echo $sdBooked; ?>" href="payment/index.php?scheduleID=<?php echo $sdBooked ?>"><?php $time = $st['start_time'];
+                                                    <li><a id="<?php echo $count; ?>" <?php $sdBooked = $st['scheduleDetail_id']; ?> value="<?php echo $sdBooked; ?>" href="payment/public/index.php?scheduleID=<?php echo $sdBooked ?>"><?php $time = $st['start_time'];
                                                                                                                                                                                                                                     $count += 1;
                                                                                                                                                                                                                                     echo date('h:i a', strtotime($time)); ?></a></li>
                                             <?php
