@@ -172,7 +172,7 @@ $result = $conn->query($sql);
             <div id="btn">
                 <button id="reserve" name="reserve">RESERVE</button>
                 </form>
-                <form action="http://localhost/cinema/pages/payment/public/checkout.php?id=<?php echo $sdBooked ?>" method="post">
+                <form action="http://localhost/projectssa/projectSAA/pages/payment/public/checkout.php?id=<?php echo $sdBooked ?>" method="post">
                     <button type="submit" id="checkout-button">PAY NOW</button>
                 </form>
 

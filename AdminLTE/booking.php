@@ -55,7 +55,7 @@ if (isset($_POST['update'])) {
 if (isset($_POST["removed"])) {
     $id = $_POST['removed'];
     try {
-        $sql = "DELETE FROM scheduledetails where scheduleDetail_id = $id limit 1";
+        $sql = "DELETE FROM bookingdetails where bookingDetail_id = $id limit 1";
         mysqli_query($connection, $sql);
         // header("location: movie.php");
     } catch (PDOException $e) {
@@ -352,7 +352,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="row">
                     <div class="col-sm-10 text-center">Add new movies</div>
                     <div class="col-sm-2">
-                        <a href="movieadd.php" class="btn btn-success" style="width: 100%;">Add</a>
+                        <a href="../pages/index.php" class="btn btn-success" style="width: 100%;">Add</a>
                     </div>
 
                 </div>
@@ -370,20 +370,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Customer ID</th>
-                                    <th scope="col">Invoice Number</th>
-                                    <th scope="col">Issue Date</th>
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Discount</th>
-                                    <th scope="col">VAT</th>
-                                    <th scope="col">Grand Total</th>
+                                    <th scope="col">Issue Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Seat Booked</th>
+                                    <th scope="col">Schedule Detail ID</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $sql = "SELECT booking_id,customer_id,invoice_number,issue_date
-                        amount,discount,vat,grand_total FROM booking order by booking_id desc";
+                                $sql = "SELECT bookingDetail_id,amount,issueDate,status,seats_booked,scheduleDetail_id FROM bookingdetails order by bookingDetail_id desc";
 
                                 $result = mysqli_query($connection, $sql);
                                 if (mysqli_errno($connection) > 0) {
@@ -391,23 +388,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 }
                                 while ($row = mysqli_fetch_assoc($result)) { ?>
                                     <tr>
-                                        <th scope="row"><?php echo $row["booking_id"]; ?></th>
-                                        <th><?php echo $row["customer_id"]; ?></th>
-                                        <th><?php echo $row["invoice_number"]; ?></th>
-                                        <th><?php echo $row["issue_date"]; ?></th>
-                                        <th><?php echo $row["amount"]; ?></th>
-                                        <th><?php echo $row["discount"]; ?></th>
-                                        <th><?php echo $row["vat"] ?></th>
-                                        <th><?php echo $row["grand_total"] ?></th>
+                                        <th scope="row"><?php echo $row["bookingDetail_id"]; ?></th>
+                                        <th><?php echo $row["amount"]; ?><span>$</span></th>
+                                        
+                                        <th><?php echo $row["issueDate"]; ?></th>
+                                       
+                                        <th><?php echo $row["status"]; ?></th>
+                                        <th><?php echo $row["seats_booked"] ?></th>
+                                        <th><?php echo $row["scheduleDetail_id"] ?></th>
                                         <?php ?>
-
                                         <th>
-                                            <input type="hidden" name="des" value="<?php echo $row["description"] ?>">
-                                            <form method="POST" action="scheduledetailadd.php" enctype="multipart/form-data">
-                                                <button type="submit" name="edits" value="<?php echo $row['booking_id'] ?>" class="btn btn-primary edit">Edit</button>
-                                            </form>
                                             <form method="POST" action="" enctype="multipart/form-data">
-                                                <button type="submit" name="removed" value="<?php echo $row['booking_id'] ?>" class="btn btn-danger">Remove</button>
+                                                
+                                                <button type="submit" name="edits" value="<?php echo $row['bookingDetail_id'] ?>" class="btn btn-primary edit">Edit</button>
+                                                <button type="submit" name="removed" value="<?php echo $row['bookingDetail_id'] ?>" class="btn btn-danger">Remove</button>
+
                                             </form>
                                         </th>
                                     </tr>

@@ -39,7 +39,7 @@ session_start();
 
       <div class="overlay" data-overlay></div>
 
-      <a href="../AdminLTE/booking.php" class="logo">
+      <a href="../AdminLTE/login.php" class="logo">
         <img src="../image/bird-logo.png" alt="Filmlane logo">
       </a>
 

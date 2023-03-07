@@ -3,6 +3,20 @@ include("db_connect.php");
 error_reporting(0);
 $edit_state = false;
 
+if (isset($_POST['submit'])) {
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+    $u = "admin";
+    $p = 123;
+
+    if ($user == $u && $pass == $p) {
+        header("location: movie.php");
+    }else {
+        header("location: login.php");
+    }
+}
+
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -250,7 +264,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="row">
-                    
+
                     <div class="col-sm-10 text-center">Add new movies</div>
                     <div class="col-sm-2">
                         <a href="movieadd.php" class="btn btn-success" style="width: 100%;">Add</a>
